@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css"/>
+
+</head>
+<body>
+
+<div class="container col-md-8" style="max-width: 760px">
+    <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/8797.png"
+             id="icon" alt="" width="100" height="120"/>
+        <h2>New Receipt</h2>
+
+
+        <form method="post" th:action="@{/create}" enctype="multipart/form-data"><!--th:object="${receipt}"-->
+            <!--FIELDS-->
+            <div class="form-group row">
+                <label for="receipt-name" class="col-sm-2 col-form-label">Name:</label>
+                <div class="col-sm-8">
+                    <input type="text" id="receipt-name" class="form-control" placeholder="Receipt name" name="name">
+                </div>
+            </div>
+            <div class="form-group row" th:each="ingred, item: *{receipt.ingredients}">
+                <label for="ingredient1" class="col-sm-2 col-form-label">Ingredient 1:</label>
+                <div class="col-sm-7">
+                    <input th:field="*{receipt.ingredients[__${item.index}__].name}" id="ingredient1" type="text"
+                           class="form-control" placeholder="Ingredient 1" name="receipt.ingredient.name">
+                </div>
+
+                <div class="col-sm-2">
+                    <input th:field="*{receipt.ingredients[__${item.index}__].quantity}" type="text"
+                           class="form-control" placeholder="Unit" name="receipt.ingredient.quantity">
+                </div>
+
+                <select th:field="*{receipt.ingredients[__${item.index}__].unit}">
+                    <option th:each="unit: ${T(pl.mmieczak.cookbook.domain.IngredientUnit).values()}"
+                            th:text="${unit.toString().toLowerCase()}" th:value="${unit}"></option>
+                </select>
+            </div>
+
+            </br>
+            <h3 for="basic" class="">Choose categorties</h3>
+            <select class="custom-select" id="basic" multiple="multiple" th:field="*{receipt.categories}"
+                    name="categories">
+                <option th:each="category: ${receipt.categories}"
+                        th:value="${{category}}" th:text="${category.name}">
+                </option>
+            </select>
+            <br/>
+            <br/>
+
+
+            <br/>
+            <!--IMAGE-->
+            <h3 for="basic" class="">Pick image: </h3>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="image" name="image_uploads">
+                <label class="custom-file-label" for="image">Image</label>
+            </div>
+            <br/>
+            <br/>
+            <!--AUTHOR - HIDDEN-->
+            <div class="form-group row">
+                <div class="col-sm-10" th:object="${receipt.author}">
+                    <input name="author.name" type="hidden" id="author_name" class="form-control" placeholder="Author"
+                           th:value="*{name}" readonly>
+                </div>
+            </div>
+            <br>
+            <div>
+                <button>Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>

@@ -20,12 +20,12 @@ INSERT INTO category(name) VALUES ('Desserts');
 INSERT INTO category(name) VALUES ('Pasta');
 INSERT INTO category(name) VALUES ('Italian');
 
-INSERT INTO receipt(name, votes, author_id) VALUES ('Scrambled Eggs', 80, 1);
+/*INSERT INTO receipt(name, votes, author_id) VALUES ('Scrambled Eggs', 80, 1);
 INSERT INTO receipt(name, votes, author_id) VALUES ('Pizza', 2, 1);
 INSERT INTO receipt(name, votes, author_id) VALUES ('Tomato Soup', 0, 3);
-INSERT INTO receipt(name, votes, author_id) VALUES ('Pancakes', 10, 4);
+INSERT INTO receipt(name, votes, author_id) VALUES ('Pancakes', 10, 4);*/
 
-INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 1', 120, 'g',1);
+/*INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 1', 120, 'g',1);
 INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 2', 100, 'g',1);
 INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 3', 550, 'g',1);
 INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 4', 50, 'g',2);
@@ -38,7 +38,7 @@ INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 10'
 INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 11', 2000, 'ml',4);
 INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 12', 400, 'ml',4);
 INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 13', 150, 'g',4);
-INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 14', 500, 'ml',4);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 14', 500, 'ml',4);*/
 
 
 
@@ -56,11 +56,11 @@ INSERT INTO receipt_ingredients(receipt_id,ingredients_id) VALUES (3,12);
 INSERT INTO receipt_ingredients(receipt_id,ingredients_id) VALUES (3,13);
 INSERT INTO receipt_ingredients(receipt_id,ingredients_id) VALUES (4,14);*/
 
-INSERT INTO receipt_categories(receipts_id,categories_id) VALUES (1,4);
+/*INSERT INTO receipt_categories(receipts_id,categories_id) VALUES (1,4);
 INSERT INTO receipt_categories(receipts_id,categories_id) VALUES (1,5);
 INSERT INTO receipt_categories(receipts_id,categories_id) VALUES (2,9);
 INSERT INTO receipt_categories(receipts_id,categories_id) VALUES (3,2);
 INSERT INTO receipt_categories(receipts_id,categories_id) VALUES (3,3);
 INSERT INTO receipt_categories(receipts_id,categories_id) VALUES (3,4);
 INSERT INTO receipt_categories(receipts_id,categories_id) VALUES (4,7);
-INSERT INTO receipt_categories(receipts_id,categories_id) VALUES (4,1);
+INSERT INTO receipt_categories(receipts_id,categories_id) VALUES (4,1);*/

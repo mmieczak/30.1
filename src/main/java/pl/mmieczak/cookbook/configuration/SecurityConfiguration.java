@@ -6,10 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
@@ -25,20 +24,28 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
                 .antMatchers("/register/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/admin").hasRole("ADMIN")
+                .antMatchers("/", "/index", "/js/**", "/css/**", "/img/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/home", true)
+                .defaultSuccessUrl("/", true)
+                .failureUrl("/login?error")
+                .permitAll()
+                .and().
+                logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/")
+                .permitAll()
                 .and()
                 .csrf()
-//                .disable()
+                //.disable()
                 .ignoringAntMatchers("/h2-console/**")
                 .and()
                 .headers().frameOptions().disable();
@@ -46,20 +53,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-/*        UserDetails user = User.withUsername("user")
-                .password("{noop}user")
-                .roles("USER")
-                .build();
-
-        UserDetails admin = User.withUsername("admin")
-                .password("{noop}admin")
-                .roles("ADMIN")
-                .build();
-
-        auth.inMemoryAuthentication()
-                .withUser(user)
-                .withUser(admin);*/
-
         auth.jdbcAuthentication().dataSource(dataSource)
                 .usersByUsernameQuery("SELECT username, password, enabled FROM user WHERE username = ?")
                 .authoritiesByUsernameQuery("SELECT username, role FROM user_role WHERE username = ?");
