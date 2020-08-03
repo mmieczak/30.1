@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.mmieczak.cookbook.domain.Ingredient;
 import pl.mmieczak.cookbook.domain.Receipt;
 import pl.mmieczak.cookbook.repository.CategoryRepository;
 import pl.mmieczak.cookbook.repository.IngredientRepository;
@@ -30,6 +31,7 @@ public class ReceiptService {
 
     @Transactional
     public void save(Receipt receipt) {
+        //ingredientRepository.save((Ingredient)receipt.getIngredients());
         receiptRepository.save(receipt);
     }
 
@@ -41,6 +43,10 @@ public class ReceiptService {
     public List<Receipt> findAllSorted(String property) {
         Sort sortProperty = by(Sort.Order.by(property).ignoreCase().with(Direction.ASC));
         return receiptRepository.findAll(sortProperty);
+    }
+
+    public void saveNewIngredient(Ingredient ingredient) {
+        ingredientRepository.save(ingredient);
     }
 
 

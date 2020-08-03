@@ -21,7 +21,7 @@
         <h2>New Receipt</h2>
 
 
-        <form method="post" th:action="@{/create}" enctype="multipart/form-data"><!--th:object="${receipt}"-->
+        <form method="post" th:action="@{/create}" th:object="${receipt}" enctype="multipart/form-data"><!--"-->
             <!--FIELDS-->
             <div class="form-group row">
                 <label for="receipt-name" class="col-sm-2 col-form-label">Name:</label>
@@ -29,19 +29,20 @@
                     <input type="text" id="receipt-name" class="form-control" placeholder="Receipt name" name="name">
                 </div>
             </div>
-            <div class="form-group row" th:each="ingred, item: *{receipt.ingredients}">
+            <div class="form-group row" th:each="ingred, item: *{ingredients}">
                 <label for="ingredient1" class="col-sm-2 col-form-label">Ingredient 1:</label>
                 <div class="col-sm-7">
-                    <input th:field="*{receipt.ingredients[__${item.index}__].name}" id="ingredient1" type="text"
+                    <input th:field="*{ingredients[__${item.index}__].name}" id="ingredient1" type="text"
                            class="form-control" placeholder="Ingredient 1" name="receipt.ingredient.name">
+                    <input th:value="${{ingred.id}}" name="receipt.ingredient.id">
                 </div>
 
                 <div class="col-sm-2">
-                    <input th:field="*{receipt.ingredients[__${item.index}__].quantity}" type="text"
+                    <input th:field="*{ingredients[__${item.index}__].quantity}" type="text"
                            class="form-control" placeholder="Unit" name="receipt.ingredient.quantity">
                 </div>
 
-                <select th:field="*{receipt.ingredients[__${item.index}__].unit}">
+                <select th:field="*{ingredients[__${item.index}__].unit}">
                     <option th:each="unit: ${T(pl.mmieczak.cookbook.domain.IngredientUnit).values()}"
                             th:text="${unit.toString().toLowerCase()}" th:value="${unit}"></option>
                 </select>
@@ -49,7 +50,7 @@
 
             </br>
             <h3 for="basic" class="">Choose categorties</h3>
-            <select class="custom-select" id="basic" multiple="multiple" th:field="*{receipt.categories}"
+            <select class="custom-select" id="basic" multiple="multiple" th:field="*{categories}"
                     name="categories">
                 <option th:each="category: ${receipt.categories}"
                         th:value="${{category}}" th:text="${category.name}">

@@ -13,13 +13,11 @@ import pl.mmieczak.cookbook.domain.Ingredient;
 import pl.mmieczak.cookbook.domain.Receipt;
 import pl.mmieczak.cookbook.service.CategoryService;
 import pl.mmieczak.cookbook.service.ReceiptService;
-import pl.mmieczak.cookbook.util.ImageUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
-import java.util.List;
 
 @Controller
 public class ReceiptController {
@@ -33,21 +31,11 @@ public class ReceiptController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/")
-    String showMainPage(Model model) {
-        List<Receipt> receipts = receiptService.find3TopRated();
-        model.addAttribute("toprated", receipts);
-        model.addAttribute("imgUtil", new ImageUtil());
-        return "index";
-    }
-
-
     @GetMapping("/create")
-    String createReceipt(Receipt rec, Model model) {
+    String createReceipt(Receipt receipt, Model model) {
 
         //GATHER Categories
-        rec.setCategories(categoryService.findAllCategories());
-
+        receipt.setCategories(categoryService.findAllCategories());
 
         //SET AUTHOR
         Author author = new Author();
@@ -59,31 +47,39 @@ public class ReceiptController {
             userName = principal.toString();
         }
         author.setName(userName);
-        rec.setAuthor(author);
+        receipt.setAuthor(author);
 
         //GENERATE INPUT form for INGREDIENTS
         for (int i = 1; i <= 5; i++) {
-            rec.addIngredient(new Ingredient());
+            Ingredient ingredient = new Ingredient();
+
+            receipt.addIngredient(ingredient);
+            receiptService.saveNewIngredient(ingredient);
         }
 
-        model.addAttribute("receipt", rec);
+
+        model.addAttribute("receipt", receipt);
+
         return "create";
     }
 
     @PostMapping("/create")
     String addReceipt(Receipt receipt, BindingResult bindingResult, HttpServletRequest request, Model model) throws IOException, ServletException {
 
-        //IMAGE ADD
+        //Receipt IMAGE ADD
         final Part filePart = request.getPart("image_uploads");
         byte[] receiptImage = filePart.getInputStream().readAllBytes();
-        receipt.setImgData(receiptImage);
+        receipt.setReceiptImage(receiptImage);
 
-        // receipt.addIngredient(ingredient);
+
+        //receipt.addIngredient();
 
         model.addAttribute("receipt", receipt);
+
         receiptService.save(receipt);
 
-        return "create";
+
+        return "redirect:/";
     }
 
 }

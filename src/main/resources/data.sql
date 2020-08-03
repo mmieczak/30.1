@@ -10,7 +10,7 @@ INSERT INTO author(name, surname) VALUES ('Kuchcik','Beztalencie');
 INSERT INTO author(name, surname) VALUES ('Joe','Doe');
 INSERT INTO author(name, surname) VALUES ('El','Testosteron');
 
-INSERT INTO category(name) VALUES ('Breakfast');
+INSERT INTO category(name, category_image) VALUES ('Breakfast',FILE_READ('http://localhost:8080/img/bg3.jpg',NULL));
 INSERT INTO category(name) VALUES ('Soups');
 INSERT INTO category(name) VALUES ('Meat');
 INSERT INTO category(name) VALUES ('Vegetarian');

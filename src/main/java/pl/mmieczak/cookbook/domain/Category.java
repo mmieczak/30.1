@@ -6,7 +6,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,6 +20,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @Lob
+    private byte[] categoryImage;
 
     @ManyToMany(mappedBy = "categories", cascade = {CascadeType.PERSIST})
     private List<Receipt> receipts;

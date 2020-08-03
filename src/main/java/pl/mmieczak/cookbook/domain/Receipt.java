@@ -3,19 +3,15 @@ package pl.mmieczak.cookbook.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "Receipt")
-@Table(name = "receipt")
 @Getter
 @Setter
 @NoArgsConstructor
-//@ToString
-
 
 public class Receipt {
 
@@ -27,14 +23,14 @@ public class Receipt {
     private Integer votes;
 
     @Lob
-    private byte[] imgData;
+    private byte[] receiptImage;
 
-    @Autowired
+
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 
     private Author author;
 
-    @Autowired
+
     @ManyToMany
     private List<Category> categories;
 
@@ -46,12 +42,11 @@ public class Receipt {
         ingredient.setReceipt(this);
     }
 
-
-    public Receipt(Long id, String name, Integer votes, byte[] imgData, Author author, List<Category> categories, List<Ingredient> ingredients) {
+    public Receipt(Long id, String name, Integer votes, byte[] receiptImage, Author author, List<Category> categories, List<Ingredient> ingredients) {
         this.id = id;
         this.name = name;
         this.votes = votes;
-        this.imgData = imgData;
+        this.receiptImage = receiptImage;
         this.author = author;
         this.categories = categories;
         this.ingredients = ingredients;
