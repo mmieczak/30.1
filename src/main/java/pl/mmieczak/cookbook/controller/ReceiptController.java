@@ -9,8 +9,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.mmieczak.cookbook.domain.Author;
+import pl.mmieczak.cookbook.domain.Category;
 import pl.mmieczak.cookbook.domain.Ingredient;
 import pl.mmieczak.cookbook.domain.Receipt;
+import pl.mmieczak.cookbook.service.AuthorService;
 import pl.mmieczak.cookbook.service.CategoryService;
 import pl.mmieczak.cookbook.service.ReceiptService;
 
@@ -18,26 +20,50 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ReceiptController {
 
     private final ReceiptService receiptService;
     private final CategoryService categoryService;
+    private final AuthorService authorService;
+    private static final Integer INGREDIENTS_AMOUNT = 3;
 
     @Autowired
-    public ReceiptController(ReceiptService receiptService, CategoryService categoryService) {
+    public ReceiptController(ReceiptService receiptService, CategoryService categoryService, AuthorService authorService) {
         this.receiptService = receiptService;
         this.categoryService = categoryService;
+        this.authorService = authorService;
+
     }
 
     @GetMapping("/create")
     String createReceipt(Receipt receipt, Model model) {
+        initializeCategories(receipt);
+        initializeAuthor(receipt);
+        initializeIngriedients(receipt, INGREDIENTS_AMOUNT);
+        model.addAttribute("receipt", receipt);
+        return "create";
+    }
 
-        //GATHER Categories
-        receipt.setCategories(categoryService.findAllCategories());
 
-        //SET AUTHOR
+    private void initializeCategories(Receipt receipt) {
+        List<Category> allCategories = categoryService.findAllCategories();
+        receipt.setCategories(allCategories);
+        receiptService.save(receipt);
+    }
+
+    private void initializeIngriedients(Receipt receipt, Integer ingredientsAmount) {
+        for (int i = 1; i <= ingredientsAmount; i++) {
+            Ingredient ingredient = new Ingredient();
+            receipt.addIngredient(ingredient);
+            receiptService.saveNewIngredient(ingredient);
+        }
+    }
+
+    private void initializeAuthor(Receipt receipt) {
         Author author = new Author();
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userName = "";
@@ -46,20 +72,13 @@ public class ReceiptController {
         } else {
             userName = principal.toString();
         }
-        author.setName(userName);
-        receipt.setAuthor(author);
-
-        //GENERATE INPUT form for INGREDIENTS
-        for (int i = 1; i <= 3; i++) {
-            Ingredient ingredient = new Ingredient();
-            receipt.addIngredient(ingredient);
-            receiptService.saveNewIngredient(ingredient);
+        Optional<Author> loginExist = authorService.findLoginExist(userName);
+        if (loginExist.isPresent()) {
+            author = loginExist.get();
+        } else {
+            author.setFirstname(userName);
         }
-
-
-        model.addAttribute("receipt", receipt);
-
-        return "create";
+        receipt.setAuthor(author);
     }
 
     @PostMapping("/create")
@@ -67,6 +86,7 @@ public class ReceiptController {
 
         receipt.getIngredients().forEach(ingredient -> ingredient.setReceipt(receipt));
         receipt.getAuthor().addReceipt(receipt);
+
 
         //receipt.getCategories().forEach(category -> category.getReceipts().set(0,receipt));
 

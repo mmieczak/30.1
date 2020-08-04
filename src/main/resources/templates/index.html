@@ -36,7 +36,7 @@
                                                      href="#portfolio">Receipts</a></li>
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"
                                                      th:href="@{/create}">New Receipt</a></li>
-                <li th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="nav-item mx-0 mx-lg-1"><a
+                <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="nav-item mx-0 mx-lg-1"><a
                         class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" th:href="@{/admin}">Admin</a></li>
                 <li sec:authorize="!isFullyAuthenticated()" class="nav-item mx-0 mx-lg-1"><a
                         class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" th:href="@{/login}">Login</a></li>
@@ -62,47 +62,25 @@
         </div>
         <!-- Masthead Subheading-->
 
-        <div class="album py-5 bg-light">
-            <div class="container">
-
-                <div class="row">
-
-                    <div class="col-md-4" th:each="item : ${toprated}">
-                        <a th:href="@{/receipts/{id}(id=${item.id})}">
-                            <div class="card mb-4 box-shadow">
-                                <!--<img class="card-img-top" th:src="${item.id}">-->
-                                <div th:if="${item.receiptImage}">
-
-                                    <img class='img-thumbnail'
-                                         th:src="'data:image/jpeg;base64,' + ${imgUtil.getImgData(item.receiptImage)}"/>
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-text text-top-rated" th:text="${item.name}">PIZZA</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        Votes: <small class="text-muted" th:text="${item.votes}">votes</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!--<div class="col-md-4">
-                        <div class="card mb-4 box-shadow">
-                            <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22348%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20348%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_173a3cfd4fb%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A17pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_173a3cfd4fb%22%3E%3Crect%20width%3D%22348%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22117.125%22%20y%3D%22120.046875%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" data-holder-rendered="true" style="height: 225px; width: 100%; display: block;">
-                            <div class="card-body">
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <div class="d-flex justify-content-between align-items-center">
-       &lt;!&ndash;                             <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                                    </div>&ndash;&gt;
-                                    <small class="text-muted">98 votes</small>
-                                </div>
-                            </div>
+        <div class="container">
+            <div class="card-deck">
+                <div class="card mb-2" th:each="item : ${toprated}">
+                    <a th:href="@{/receipts/{id}(id=${item.id})}">
+                        <div th:if="${item.receiptImage}">
+                            <img class="card-img-top img-fluid"
+                                 th:src="'data:image/jpeg;base64,' + ${imgUtil.getImgData(item.receiptImage)}">
                         </div>
 
-                    </div>-->
+                        <div class="card-body">
+                            <h4 class="card-title" th:text="${item.name}">Card title</h4>
+                            <!--<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            -->
+                            <p class="card-text"><small class="text-muted"
+                                                        th:text="${item.votes}+' votes'">Votes</small></p>
+                        </div>
+                    </a>
                 </div>
+
             </div>
         </div>
 
@@ -120,85 +98,25 @@
             <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
             <div class="divider-custom-line"></div>
         </div>
-        <!-- Portfolio Grid Items-->
-        <div class="col-md-4" th:each="category : ${categories}">
-            <a th:href="@{/categories/{id}(id=${category.id})}">
-                <div class="card mb-4 box-shadow">
-                    <!--<img class="card-img-top" th:src="${item.id}">-->
-                    <div th:if="${category.categoryImage}">
 
-                        <img class='img-thumbnail'
-                             th:src="'data:image/jpeg;base64,' + ${imgUtil.getImgData(category.categoryImage)}"/>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text text-top-rated" th:text="${category.name}">PIZZA</p>
-                    </div>
+
+        <div class="container">
+            <div class="card-columns">
+                <div class="card mb-2" th:each="category : ${categories}">
+                    <a th:href="@{/categories/{id}(id=${category.id})}">
+                        <div th:if="${category.categoryImage}">
+                            <!--<img class="card-img-top img-fluid" th:src="'data:image/jpeg;base64,' + ${imgUtil.getImgData(imagedata)}"/>-->
+                            <img class="card-img-top img-fluid"
+                                 th:src="'data:image/jpeg;base64,' + ${imgUtil.getImgData(category.categoryImage)}"/>
+                        </div>
+
+                        <div class="card-body">
+                            <h4 class="card-title" th:text="${category.name}">Card title</h4>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
-        <div class="row">
-            <!-- Portfolio Item 1-->
-            <div class="col-md-6 col-lg-4 mb-5">
-                <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal1">
-                    <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                        <div class="portfolio-item-caption-content text-center text-white"><i
-                                class="fas fa-plus fa-3x"></i></div>
-                    </div>
-                    <img class="img-fluid" src="assets/img/portfolio/cabin.png" alt=""/>
-                </div>
+
             </div>
-
-
-            <!--          &lt;!&ndash; Portfolio Item 2&ndash;&gt;
-                      <div class="col-md-6 col-lg-4 mb-5">
-                          <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal2">
-                              <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                                  <div class="portfolio-item-caption-content text-center text-white"><i
-                                          class="fas fa-plus fa-3x"></i></div>
-                              </div>
-                              <img class="img-fluid" src="assets/img/portfolio/cake.png" alt=""/>
-                          </div>
-                      </div>
-                      &lt;!&ndash; Portfolio Item 3&ndash;&gt;
-                      <div class="col-md-6 col-lg-4 mb-5">
-                          <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal3">
-                              <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                                  <div class="portfolio-item-caption-content text-center text-white"><i
-                                          class="fas fa-plus fa-3x"></i></div>
-                              </div>
-                              <img class="img-fluid" src="assets/img/portfolio/circus.png" alt=""/>
-                          </div>
-                      </div>
-                      &lt;!&ndash; Portfolio Item 4&ndash;&gt;
-                      <div class="col-md-6 col-lg-4 mb-5 mb-lg-0">
-                          <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal4">
-                              <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                                  <div class="portfolio-item-caption-content text-center text-white"><i
-                                          class="fas fa-plus fa-3x"></i></div>
-                              </div>
-                              <img class="img-fluid" src="assets/img/portfolio/game.png" alt=""/>
-                          </div>
-                      </div>
-                      &lt;!&ndash; Portfolio Item 5&ndash;&gt;
-                      <div class="col-md-6 col-lg-4 mb-5 mb-md-0">
-                          <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal5">
-                              <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                                  <div class="portfolio-item-caption-content text-center text-white"><i
-                                          class="fas fa-plus fa-3x"></i></div>
-                              </div>
-                              <img class="img-fluid" src="assets/img/portfolio/safe.png" alt=""/>
-                          </div>
-                      </div>
-                      &lt;!&ndash; Portfolio Item 6&ndash;&gt;
-                      <div class="col-md-6 col-lg-4">
-                          <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal6">
-                              <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                                  <div class="portfolio-item-caption-content text-center text-white"><i
-                                          class="fas fa-plus fa-3x"></i></div>
-                              </div>
-                              <img class="img-fluid" src="assets/img/portfolio/submarine.png" alt=""/>
-                          </div>
-                      </div>-->
         </div>
     </div>
 </section>
@@ -206,7 +124,7 @@
 
 <!-- Copyright Section-->
 <div class="copyright py-4 text-center text-white">
-    <div class="container"><small>Copyright © Your Website 2020</small></div>
+    <div class="container"><small>Copyright © CookBook Demo Project 2020</small></div>
 </div>
 <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes)-->
 <div class="scroll-to-top d-lg-none position-fixed">

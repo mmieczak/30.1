@@ -3,7 +3,6 @@ package pl.mmieczak.cookbook.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,7 +18,8 @@ public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String username;
+    private String firstname;
     private String surname;
 
     @OneToMany(mappedBy = "author", orphanRemoval = true, cascade = CascadeType.PERSIST)

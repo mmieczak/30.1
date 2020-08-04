@@ -1,29 +1,26 @@
-INSERT INTO user(username, password, enabled) VALUES ('admin', '{noop}admin', true);
-INSERT INTO user(username, password, enabled) VALUES ('user', '{noop}user', true);
+INSERT INTO user(username, password, enabled, firstname, surname) VALUES ('admin', '{noop}admin', true, 'Thed', 'GOD');
+INSERT INTO user(username, password, enabled, firstname, surname) VALUES ('user', '{noop}user', true, 'Jan', 'Kowalski');
 
-INSERT INTO user_role(username, role) VALUES ('admin', 'ROLE_ADMIN');
-INSERT INTO user_role(username, role) VALUES ('user', 'ROLE_USER');
+INSERT INTO user_role(username, role ) VALUES ('admin', 'ADMIN');
+INSERT INTO user_role(username, role) VALUES ( 'user', 'USER' );
 
-INSERT INTO author(name, surname) VALUES ('Magda','Gessler');
-INSERT INTO author(name, surname) VALUES ('Andrzej','Sapkowski');
-INSERT INTO author(name, surname) VALUES ('Kuchcik','Beztalencie');
-INSERT INTO author(name, surname) VALUES ('Joe','Doe');
-INSERT INTO author(name, surname) VALUES ('El','Testosteron');
+INSERT INTO author(username, firstname, surname) VALUES ('user','Jan', 'Kowalski');
+INSERT INTO author(username, firstname, surname) VALUES ('admin','Mac', 'Miecz');
 
-INSERT INTO category(name, category_image) VALUES ('Breakfast',FILE_READ('http://localhost:8080/img/bg3.jpg',NULL));
-INSERT INTO category(name) VALUES ('Soups');
-INSERT INTO category(name) VALUES ('Meat');
-INSERT INTO category(name) VALUES ('Vegetarian');
-INSERT INTO category(name) VALUES ('Low FAT');
-INSERT INTO category(name) VALUES ('Gluten Free');
-INSERT INTO category(name) VALUES ('Desserts');
-INSERT INTO category(name) VALUES ('Pasta');
-INSERT INTO category(name) VALUES ('Italian');
+INSERT INTO category(name, category_image) VALUES ('Breakfast',FILE_READ('src/main/resources/static/img/sr1.jpg'));
+INSERT INTO category(name, category_image) VALUES ('Soups',FILE_READ('src/main/resources/static/img/sr2.jpg'));
+INSERT INTO category(name, category_image) VALUES ('Meat',FILE_READ('src/main/resources/static/img/sr3.jpg'));
+INSERT INTO category(name, category_image) VALUES ('Vegetarian',FILE_READ('src/main/resources/static/img/sr4.jpg'));
+INSERT INTO category(name, category_image) VALUES ('Low Fat',FILE_READ('src/main/resources/static/img/sr5.jpg'));
+INSERT INTO category(name, category_image) VALUES ('Gluten Free',FILE_READ('src/main/resources/static/img/sr6.jpg'));
+INSERT INTO category(name, category_image) VALUES ('Deserts',FILE_READ('src/main/resources/static/img/sr7.jpg'));
+INSERT INTO category(name, category_image) VALUES ('Junk',FILE_READ('src/main/resources/static/img/sr8.jpg'));
 
-/*INSERT INTO receipt(name, votes, author_id) VALUES ('Scrambled Eggs', 80, 1);
-INSERT INTO receipt(name, votes, author_id) VALUES ('Pizza', 2, 1);
-INSERT INTO receipt(name, votes, author_id) VALUES ('Tomato Soup', 0, 3);
-INSERT INTO receipt(name, votes, author_id) VALUES ('Pancakes', 10, 4);*/
+
+INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Scrambled Eggs', 80, 1, FILE_READ('src/main/resources/static/img/rec6.jpg'));
+INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Pizza', 177, 2, FILE_READ('src/main/resources/static/img/rec9.jpg'));
+INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Green Soup', 98, 1, FILE_READ('src/main/resources/static/img/rec3.jpg'));
+INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Sandwitches', 10, 2, FILE_READ('src/main/resources/static/img/rec4.jpg'));
 
 /*INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 1', 120, 'g',1);
 INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 2', 100, 'g',1);

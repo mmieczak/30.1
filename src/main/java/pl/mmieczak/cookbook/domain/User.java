@@ -21,5 +21,9 @@ public class User {
     private String username;
     private String password;
     private boolean enabled;
+    private String firstname;
+    private String surname;
 
+    public User(String username, String password, boolean enabled, String firstname, String surname) {
+    }
 }

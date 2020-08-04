@@ -28,10 +28,10 @@ public class Category {
     @ManyToMany(mappedBy = "categories", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Receipt> receipts = new ArrayList<>();
 
-    public void addReceipt(Receipt receipt) {
+ /*   public void addReceipt(Receipt receipt) {
         receipts.add(receipt);
-        receipt.setCategories((List<Category>) this);
-    }
+        receipt.setCategories(this);
+    }*/
 
 /*    //Helper Method, zachowanie spojnosci modelu danych i modelu obiektowego
     public void addReceipt(Receipt receipt) {

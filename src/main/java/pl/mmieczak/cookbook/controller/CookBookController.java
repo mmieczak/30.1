@@ -10,6 +10,7 @@ import pl.mmieczak.cookbook.service.CategoryService;
 import pl.mmieczak.cookbook.service.ReceiptService;
 import pl.mmieczak.cookbook.util.ImageUtil;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -25,14 +26,21 @@ public class CookBookController {
     }
 
     @GetMapping("/")
-    String showMainPage(Model model) {
+    String showMainPage(Model model) throws IOException {
         List<Receipt> topRatedThreeReceipts = receiptService.find3TopRated();
         List<Category> allCategories = categoryService.findAllCategories();
         model.addAttribute("toprated", topRatedThreeReceipts);
         model.addAttribute("imgUtil", new ImageUtil());
         model.addAttribute("categories", allCategories);
+
+
+        byte[] imageAsBytes = ImageUtil.getImageAsBytes("test");
+        model.addAttribute("imagedata", imageAsBytes);
+
         return "index";
     }
+
+
 
  /*   ReceiptService receiptService;
     CategoryService categoryService;
