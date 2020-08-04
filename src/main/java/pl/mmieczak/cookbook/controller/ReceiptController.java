@@ -66,9 +66,11 @@ public class ReceiptController {
     String addReceipt(Receipt receipt, BindingResult bindingResult, HttpServletRequest request, Model model) throws IOException, ServletException {
 
         receipt.getIngredients().forEach(ingredient -> ingredient.setReceipt(receipt));
-        //receipt.getAuthor().addReceipt(receipt); //??
+        receipt.getAuthor().addReceipt(receipt);
+
+        //receipt.getCategories().forEach(category -> category.getReceipts().set(0,receipt));
+
         receipt.setVotes(0);
-        //receipt.getAuthor().setReceipts(receipt);
         //Receipt IMAGE ADD
         final Part filePart = request.getPart("image_uploads");
         byte[] receiptImage = filePart.getInputStream().readAllBytes();

@@ -28,18 +28,13 @@ public class Receipt {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Author author;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Category> categories;
 
     @OneToMany(mappedBy = "receipt", orphanRemoval = true)
     private List<Ingredient> ingredients = new ArrayList<>();
 
     public void addIngredient(Ingredient ingredient) {
-        this.ingredients.add(ingredient);
-        ingredient.setReceipt(this);
-    }
-
-    public void addIAuthor(Ingredient ingredient) {
         this.ingredients.add(ingredient);
         ingredient.setReceipt(this);
     }

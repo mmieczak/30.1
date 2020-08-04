@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,12 +26,12 @@ public class Category {
     private byte[] categoryImage;
 
     @ManyToMany(mappedBy = "categories", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<Receipt> receipts;
+    private List<Receipt> receipts = new ArrayList<>();
 
-/*    public void addReceipt(Receipt receipt) {
+    public void addReceipt(Receipt receipt) {
         receipts.add(receipt);
-        receipt.setCategories(new ArrayList<Category>().add(this));
-    }*/
+        receipt.setCategories((List<Category>) this);
+    }
 
 /*    //Helper Method, zachowanie spojnosci modelu danych i modelu obiektowego
     public void addReceipt(Receipt receipt) {
