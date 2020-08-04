@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css"/>
-
+    <title>TEST</title>
 </head>
 <body>
 
@@ -21,7 +21,8 @@
         <h2>New Receipt</h2>
 
 
-        <form method="post" th:action="@{/create}" th:object="${receipt}" enctype="multipart/form-data"><!--"-->
+        <form method="post" th:action="@{/create}" th:object="${receipt}" enctype="multipart/form-data">
+            <input th:field="*{id}" name="receipt.id" hidden>
             <!--FIELDS-->
             <div class="form-group row">
                 <label for="receipt-name" class="col-sm-2 col-form-label">Name:</label>
@@ -30,11 +31,12 @@
                 </div>
             </div>
             <div class="form-group row" th:each="ingred, item: *{ingredients}">
-                <label for="ingredient1" class="col-sm-2 col-form-label">Ingredient 1:</label>
+                <label for="ingredient1" class="col-sm-2 col-form-label"
+                       th:text="*{'Ingredient '+__${item.index+1}__+':'}">Ingredient 1:</label>
                 <div class="col-sm-7">
                     <input th:field="*{ingredients[__${item.index}__].name}" id="ingredient1" type="text"
-                           class="form-control" placeholder="Ingredient 1" name="receipt.ingredient.name">
-                    <input th:value="${{ingred.id}}" name="receipt.ingredient.id">
+                           class="form-control" th:placeholder="*{'Ingredient name'}" name="receipt.ingredient.name">
+                    <input th:field="*{ingredients[__${item.index}__].id}" name="receipt.ingredient.id" hidden>
                 </div>
 
                 <div class="col-sm-2">
@@ -74,6 +76,7 @@
                 <div class="col-sm-10" th:object="${receipt.author}">
                     <input name="author.name" type="hidden" id="author_name" class="form-control" placeholder="Author"
                            th:value="*{name}" readonly>
+                    <input th:field="*{id}" name="author.id" hidden>
                 </div>
             </div>
             <br>

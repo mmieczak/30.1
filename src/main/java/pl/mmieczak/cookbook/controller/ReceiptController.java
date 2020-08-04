@@ -50,9 +50,8 @@ public class ReceiptController {
         receipt.setAuthor(author);
 
         //GENERATE INPUT form for INGREDIENTS
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 3; i++) {
             Ingredient ingredient = new Ingredient();
-
             receipt.addIngredient(ingredient);
             receiptService.saveNewIngredient(ingredient);
         }
@@ -66,18 +65,18 @@ public class ReceiptController {
     @PostMapping("/create")
     String addReceipt(Receipt receipt, BindingResult bindingResult, HttpServletRequest request, Model model) throws IOException, ServletException {
 
+        receipt.getIngredients().forEach(ingredient -> ingredient.setReceipt(receipt));
+        //receipt.getAuthor().addReceipt(receipt); //??
+        receipt.setVotes(0);
+        //receipt.getAuthor().setReceipts(receipt);
         //Receipt IMAGE ADD
         final Part filePart = request.getPart("image_uploads");
         byte[] receiptImage = filePart.getInputStream().readAllBytes();
         receipt.setReceiptImage(receiptImage);
 
 
-        //receipt.addIngredient();
-
-        model.addAttribute("receipt", receipt);
-
         receiptService.save(receipt);
-
+        //model.addAttribute("receipt", receipt);
 
         return "redirect:/";
     }

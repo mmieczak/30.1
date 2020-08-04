@@ -25,11 +25,8 @@ public class Receipt {
     @Lob
     private byte[] receiptImage;
 
-
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-
     private Author author;
-
 
     @ManyToMany
     private List<Category> categories;
@@ -41,6 +38,12 @@ public class Receipt {
         this.ingredients.add(ingredient);
         ingredient.setReceipt(this);
     }
+
+    public void addIAuthor(Ingredient ingredient) {
+        this.ingredients.add(ingredient);
+        ingredient.setReceipt(this);
+    }
+
 
     public Receipt(Long id, String name, Integer votes, byte[] receiptImage, Author author, List<Category> categories, List<Ingredient> ingredients) {
         this.id = id;

@@ -31,7 +31,6 @@ public class ReceiptService {
 
     @Transactional
     public void save(Receipt receipt) {
-        //ingredientRepository.save((Ingredient)receipt.getIngredients());
         receiptRepository.save(receipt);
     }
 
