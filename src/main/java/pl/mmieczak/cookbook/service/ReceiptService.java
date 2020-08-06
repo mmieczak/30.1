@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.mmieczak.cookbook.domain.Category;
 import pl.mmieczak.cookbook.domain.Ingredient;
 import pl.mmieczak.cookbook.domain.Receipt;
+import pl.mmieczak.cookbook.domain.ReceiptFilters;
 import pl.mmieczak.cookbook.repository.CategoryRepository;
 import pl.mmieczak.cookbook.repository.IngredientRepository;
 import pl.mmieczak.cookbook.repository.ReceiptRepository;
@@ -42,8 +43,21 @@ public class ReceiptService {
 
 
     public List<Receipt> findAllSorted(String property) {
+
         Sort sortProperty = by(Sort.Order.by(property).ignoreCase().with(Direction.ASC));
         return receiptRepository.findAll(sortProperty);
+    }
+
+    public List<Receipt> findAllforFilters(ReceiptFilters receiptFilters, Category category) {
+
+        return receiptRepository.findByNameContainsIgnoreCaseAndAuthor_UsernameContainsIgnoreCaseAndCategoriesContains(receiptFilters.getName(), receiptFilters.getAuthor(), category);
+        //return receiptRepository.findByNameContainsIgnoreCaseAndAuthor_UsernameIgnoreCaseAndCategoriesContains(receiptFilters.getName(), receiptFilters.getAuthor(), category);
+
+    }
+
+    public List<Receipt> findAllforEmptyFilters(ReceiptFilters receiptFilters) {
+
+        return receiptRepository.findByNameContainsIgnoreCaseAndAuthor_UsernameContainsIgnoreCase(receiptFilters.getName(), receiptFilters.getAuthor());
     }
 
     public void saveNewIngredient(Ingredient ingredient) {

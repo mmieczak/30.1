@@ -36,12 +36,26 @@
                                                      href="#portfolio">Receipts</a></li>
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"
                                                      th:href="@{/create}">New Receipt</a></li>
-                <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="nav-item mx-0 mx-lg-1"><a
-                        class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" th:href="@{/admin}">Admin</a></li>
-                <li sec:authorize="!isFullyAuthenticated()" class="nav-item mx-0 mx-lg-1"><a
-                        class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" th:href="@{/login}">Login</a></li>
-                <li sec:authorize="isFullyAuthenticated()" class="nav-item mx-0 mx-lg-1"><a
-                        class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" th:href="@{/logout} ">Logout</a>
+                <!--<li th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="nav-item mx-0 mx-lg-1">-->
+
+                <ul class="nav nav-tabs" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true" aria-expanded="false">ADMIN</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" th:href="@{/admin/categories}">Categories</a>
+                            <a class="dropdown-item" th:href="@{/admin/receipts}">Receipts</a>
+                            <a class="dropdown-item" th:href="@{/admin/authors}">Authors</a>
+                        </div>
+                    </li>
+                </ul>
+
+                <!--<a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" th:href="@{/admin}">Admin</a>-->
+                <!--  </li>-->
+                <li sec:authorize="!isFullyAuthenticated()" class="nav-item mx-0 mx-lg-1">
+                    <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" th:href="@{/login}">Login</a></li>
+                <li sec:authorize="isFullyAuthenticated()" class="nav-item mx-0 mx-lg-1">
+                    <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" th:href="@{/logout} ">Logout</a>
                 </li>
             </ul>
         </div>
@@ -131,15 +145,15 @@
     <a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top"><i
             class="fa fa-chevron-up"></i></a>
 </div>
-<!--  Bootstrap core JS
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
- &lt;!&ndash; Third party plugin JS&ndash;&gt;
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
- &lt;!&ndash; Contact form JS&ndash;&gt;
- <script src="assets/mail/jqBootstrapValidation.js"></script>
- <script src="assets/mail/contact_me.js"></script>
- &lt;!&ndash; Core theme JS&ndash;&gt;
- <script src="../static/js/scripts_stopped.js"></script>-->
+Bootstrap core JS
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+<!-- Third party plugin JS-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+<!-- Contact form JS-->
+<script src="assets/mail/jqBootstrapValidation.js"></script>
+<script src="assets/mail/contact_me.js"></script>
+<!-- Core theme JS-->
+<script src="../static/js/scripts_stopped.js"></script>
 </body>
 </html>
