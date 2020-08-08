@@ -16,5 +16,5 @@ public interface ReceiptRepository extends JpaRepository<Receipt, Long> {
    /* List<Receipt> findByCategories
             (String name, String author, Category category);*/
 
-    List<Receipt> findByNameContainsIgnoreCaseAndAuthor_UsernameContainsIgnoreCase(String name, String author);
+    List<Receipt> findByNameContainingIgnoreCaseAndAuthor_UsernameContainsIgnoreCase(String name, String author);
 }

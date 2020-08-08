@@ -32,10 +32,10 @@ public class CookBookController {
         model.addAttribute("toprated", topRatedThreeReceipts);
         model.addAttribute("imgUtil", new ImageUtil());
         model.addAttribute("categories", allCategories);
-
+/*
 
         byte[] imageAsBytes = ImageUtil.getImageAsBytes("test");
-        model.addAttribute("imagedata", imageAsBytes);
+        model.addAttribute("imagedata", imageAsBytes);*/
 
         return "index";
     }

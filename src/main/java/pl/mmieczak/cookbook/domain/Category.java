@@ -55,4 +55,8 @@ public class Category {
     public int hashCode() {
         return Objects.hash(id, name);
     }
+
+    public static Category create() {
+        return new Category();
+    }
 }

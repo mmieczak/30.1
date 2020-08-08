@@ -17,14 +17,14 @@ INSERT INTO category(name, category_image) VALUES ('Deserts',FILE_READ('src/main
 INSERT INTO category(name, category_image) VALUES ('Junk',FILE_READ('src/main/resources/static/img/sr8.jpg'));
 
 
-INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Scrambled Eggs', 80, 1, FILE_READ('src/main/resources/static/img/rec6.jpg'));
-INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Pizza', 177, 2, FILE_READ('src/main/resources/static/img/rec9.jpg'));
+INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Poached Eggs', 80, 1, FILE_READ('src/main/resources/static/img/rec6.jpg'));
+INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Pizza Margerita', 177, 2, FILE_READ('src/main/resources/static/img/rec9.jpg'));
 INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Green Soup', 98, 1, FILE_READ('src/main/resources/static/img/rec3.jpg'));
-INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Sandwitches', 10, 2, FILE_READ('src/main/resources/static/img/rec4.jpg'));
+INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Sandwitches 1', 10, 2, FILE_READ('src/main/resources/static/img/rec4.jpg'));
 INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Scrambled Eggs', 80, 1, FILE_READ('src/main/resources/static/img/rec1.jpg'));
-INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Pizza', 177, 2, FILE_READ('src/main/resources/static/img/rec2.jpg'));
-INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Green Soup', 98, 1, FILE_READ('src/main/resources/static/img/rec5.jpg'));
-INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Sandwitches', 10, 2, FILE_READ('src/main/resources/static/img/rec6.jpg'));
+INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Pizza Salame', 177, 2, FILE_READ('src/main/resources/static/img/rec2.jpg'));
+INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Fish Soup', 98, 1, FILE_READ('src/main/resources/static/img/rec5.jpg'));
+INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Sandwitches 2', 10, 2, FILE_READ('src/main/resources/static/img/rec6.jpg'));
 
 /*INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 1', 120, 'g',1);
 INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 2', 100, 'g',1);

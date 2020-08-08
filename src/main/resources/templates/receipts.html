@@ -33,7 +33,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"
-                                                     href="#portfolio">Receipts</a></li>
+                                                     th:href="@{/receipts}">Receipts</a></li>
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"
                                                      th:href="@{/create}">New Receipt</a></li>
                 <!--<li th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="nav-item mx-0 mx-lg-1">-->
@@ -81,7 +81,7 @@
             <div class="col-md-12 md-auto ">
 
                 <!--AUTHOR-->
-                <form action="/admin/receipts" method="get" th:object="${filters}">
+                <form action="/receipts" method="get" th:object="${filters}">
                     <!--RECEIPT NAME-->
                     <div class="form-row">
 
@@ -122,7 +122,7 @@
                 <div class="container">
                     <div class="card-columns">
                         <div class="card mb-2" th:each="receipt : ${receipts}">
-                            <a th:href="@{/admin/receipts/{id}(id=${receipt.id})}">
+                            <a th:href="@{/receipts/{id}(id=${receipt.id})}">
                                 <div th:if="${receipt.receiptImage}">
                                     <img class="card-img-top img-fluid"
                                          th:src="'data:image/jpeg;base64,' + ${imgUtil.getImgData(receipt.receiptImage)}"/>
@@ -137,17 +137,25 @@
 
                             <div class="form-inline text-center" style="align-items: center">
                                 <div class="col-md-12 form-inline">
-                                    <label class="text-danger col-md-8 col-form-label px-4" for="like-btn">Votes:<span
-                                            th:text="${receipt.votes}"></span>
-                                    </label>
-                                    <form class="text-danger col-md-1" method="POST" id="like-btn"
-                                          th:action="@{/vote-admin(receipt=${receipt.id})}">
-                                        <input type="image"
-                                               src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAyUlEQVRIie2UMQoCMRBFXxTsvIHWVp7BUvYEFl5G8AReQTyAhZWtYOcJrHRlO4utRWKxBkLYhB2dLQQ/DIQhvDdJIPDr6Qr2DoEzMAAOwEN7mBlg37XWhgOsPEGpDe9TXY8T3DXhPWDvwS1w1IIbYBPALbDUEixq4BYYfwLzAS5lRJCqHMiaCqRwV1cHMAEs7Ps9aQxA5wtAKhe3aEuwq2tqvcETGLUp2MaOpSWYtCk4xeBagrlUkAvgN6qPUSTIGkoKYJqC/xPNC1w0r+ML1j9OAAAAAElFTkSuQmCC"
-                                        />
-                                    </form>
-
-                                </div><!---->
+                                    <div sec:authorize="!isFullyAuthenticated()">
+                                        <label class="text-danger col-md-12 col-form-label px-4"
+                                               for="like-btn">Votes:<span
+                                                th:text="${receipt.votes}"></span>
+                                        </label>
+                                    </div>
+                                    <div sec:authorize="isFullyAuthenticated()">
+                                        <label class="text-danger col-md-8 col-form-label px-4"
+                                               for="like-btn">Votes:<span
+                                                th:text="${receipt.votes}"></span>
+                                        </label>
+                                        <form class="text-danger col-md-1" method="POST" id="like-btn"
+                                              th:action="@{/vote(receipt=${receipt.id})}">
+                                            <input type="image"
+                                                   src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAyUlEQVRIie2UMQoCMRBFXxTsvIHWVp7BUvYEFl5G8AReQTyAhZWtYOcJrHRlO4utRWKxBkLYhB2dLQQ/DIQhvDdJIPDr6Qr2DoEzMAAOwEN7mBlg37XWhgOsPEGpDe9TXY8T3DXhPWDvwS1w1IIbYBPALbDUEixq4BYYfwLzAS5lRJCqHMiaCqRwV1cHMAEs7Ps9aQxA5wtAKhe3aEuwq2tqvcETGLUp2MaOpSWYtCk4xeBagrlUkAvgN6qPUSTIGkoKYJqC/xPNC1w0r+ML1j9OAAAAAElFTkSuQmCC"
+                                            />
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                             <div class="justify-content-between">
                                 <a th:href="@{'/update/receipt?id=' + ${receipt.id}}" class="category-item">

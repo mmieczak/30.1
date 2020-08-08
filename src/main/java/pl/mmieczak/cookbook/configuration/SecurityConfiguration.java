@@ -28,14 +28,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/register/**").permitAll()
+                .antMatchers("/resources/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/", "/index", "/js/**", "/css/**", "/img/**", "/receipts").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/", "/index", "/js/**", "/css/**", "/img/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/", true)
+                //.defaultSuccessUrl("/", true)
                 .failureUrl("/login?error")
                 .permitAll()
                 .and().
