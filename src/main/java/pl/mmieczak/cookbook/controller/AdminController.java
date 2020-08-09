@@ -4,7 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import pl.mmieczak.cookbook.domain.Category;
 import pl.mmieczak.cookbook.domain.Receipt;
 import pl.mmieczak.cookbook.domain.ReceiptFilters;
@@ -28,32 +27,32 @@ public class AdminController {
         this.authorService = authorService;
     }
 
-    @GetMapping("/admin")
-    @ResponseBody
-    String home() {
-        return "Jesteś w panelu administratora";
-    }
-
     @GetMapping("/admin/receipts")
     String adminReceipts(Model model, ReceiptFilters receiptFilters) {
 
-        List<Receipt> allReceipts;
+        /*ReceiptController receiptController = new ReceiptController(receiptService, categoryService, authorService);
+        receiptController.showReceipts(model, receiptFilters);*/
+
+        List<Receipt> allUsersReceipts;
 
         if (receiptFilters.getCategory() == null) {
             receiptFilters.setCategory(new Category());
         }
 
         if (receiptFilters.getCategory().equals(new Category()))
-            allReceipts = receiptService.findAllForEmptyCategory(receiptFilters);
+            allUsersReceipts = receiptService.findAllForEmptyCategory(receiptFilters);
         else {
-            allReceipts = receiptService.findAllforFilters(receiptFilters);
+            allUsersReceipts = receiptService.findAllforFilters(receiptFilters);
         }
+
+        String messageAdminAfterUpdateLikes = String.valueOf(model.asMap().get("message"));
 
         model.addAttribute("allcategories", categoryService.findAllCategories());
         model.addAttribute("allauthors", authorService.findAllAuthors());
-        model.addAttribute("receipts", allReceipts);
+        model.addAttribute("receipts", allUsersReceipts);
         model.addAttribute("imgUtil", new ImageUtil());
         model.addAttribute("filters", receiptFilters);
+        model.addAttribute("message", messageAdminAfterUpdateLikes);
         return "admin-rec";
     }
 

@@ -23,6 +23,6 @@ public class Ingredient {
     @Enumerated(value = EnumType.STRING)
     private IngredientUnit unit;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     private Receipt receipt;
 }

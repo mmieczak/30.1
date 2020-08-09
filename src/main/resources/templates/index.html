@@ -117,7 +117,9 @@
         <div class="container">
             <div class="card-columns">
                 <div class="card mb-2" th:each="category : ${categories}">
-                    <a th:href="@{/categories/{id}(id=${category.id})}">
+                    <!--<a th:href="@{/categories/{id}(id=${category.id})}">-->
+                    <a th:href="@{/category(id=${category.id})}">
+
                         <div th:if="${category.categoryImage}">
                             <!--<img class="card-img-top img-fluid" th:src="'data:image/jpeg;base64,' + ${imgUtil.getImgData(imagedata)}"/>-->
                             <img class="card-img-top img-fluid"

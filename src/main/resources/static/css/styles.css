@@ -2216,6 +2216,12 @@ textarea.form-control {
     margin-left: -5px;
 }
 
+.form-row-rec {
+    flex-wrap: wrap;
+    margin-right: -5px;
+    margin-left: -5px;
+}
+
 .form-row > .col,
 .form-row > [class*=col-] {
     padding-right: 5px;

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.mmieczak.cookbook.domain.Category;
 import pl.mmieczak.cookbook.domain.Ingredient;
 import pl.mmieczak.cookbook.domain.Receipt;
 import pl.mmieczak.cookbook.domain.ReceiptFilters;
@@ -74,10 +75,15 @@ public class ReceiptService {
 
     }
 
+    public void deleteById(Long id) {
+        receiptRepository.deleteById(id);
+    }
 
-    //zrobic uzywajac specyfikacji!!!!
-  /*  public List<Receipt> findAllForFilters(ReceiptFilters receiptFilters) {
-        //   Specification
-        return receiptRepository.findByNameContainsIgnoreCaseAndVotesContainsIgnoreCaseAndAuthorContainsIgnoreCase(receiptFilters.getName(), receiptFilters.getVotes(), receiptFilters.getAuthor().getSurname());
-    }*/
+    public List<Receipt> findAllForCategory(Category selectedCategory) {
+        return receiptRepository.findAllByCategoriesContains(selectedCategory);
+    }
+
+    public List<Receipt> findAllForCategoryAndReceiptName(Category selectedCategory, String name) {
+        return receiptRepository.findAllByCategoriesContainsAndNameContainingIgnoreCase(selectedCategory, name);
+    }
 }

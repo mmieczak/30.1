@@ -25,13 +25,13 @@ public class Receipt {
     @Lob
     private byte[] receiptImage;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     private Author author;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Category> categories;
 
-    @OneToMany(mappedBy = "receipt", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "receipt", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<Ingredient> ingredients = new ArrayList<>();
 
     public void addIngredient(Ingredient ingredient) {

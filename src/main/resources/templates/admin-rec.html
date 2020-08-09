@@ -133,42 +133,57 @@
 
                                 </div>
                             </a>
+                            <div class="form-row-rec">
+                                <div sec:authorize="isFullyAuthenticated()" style="align-content: center">
 
+                                    <form method="POST" id="like-update"
+                                          th:action="@{/vote(receipt=${receipt.id})}" th:object="${receipt}">
+                                        <div class="form-group">
+                                            <input type="text" class="text-danger  col-form-label" for="like-btn2"
+                                                   th:value="${receipt.votes}" name="votes" style="text-align: center">
 
-                            <div class="form-inline text-center" style="align-items: center">
-                                <div class="col-md-12 form-inline">
-                                    <label class="text-danger col-md-8 col-form-label px-4" for="like-btn">Votes:<span
-                                            th:text="${receipt.votes}"></span>
-                                    </label>
-                                    <form class="text-danger col-md-1" method="POST" id="like-btn"
-                                          th:action="@{/vote-admin(receipt=${receipt.id})}">
-                                        <input type="image"
-                                               src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAyUlEQVRIie2UMQoCMRBFXxTsvIHWVp7BUvYEFl5G8AReQTyAhZWtYOcJrHRlO4utRWKxBkLYhB2dLQQ/DIQhvDdJIPDr6Qr2DoEzMAAOwEN7mBlg37XWhgOsPEGpDe9TXY8T3DXhPWDvwS1w1IIbYBPALbDUEixq4BYYfwLzAS5lRJCqHMiaCqRwV1cHMAEs7Ps9aQxA5wtAKhe3aEuwq2tqvcETGLUp2MaOpSWYtCk4xeBagrlUkAvgN6qPUSTIGkoKYJqC/xPNC1w0r+ML1j9OAAAAAElFTkSuQmCC"
-                                        />
+                                            <!--<input type="number" hidden for="like-btn2"
+                                                   th:value="${receipt}" name="receipt">-->
+
+                                            <input id="like-btn2" type="image"
+                                                   src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAyUlEQVRIie2UMQoCMRBFXxTsvIHWVp7BUvYEFl5G8AReQTyAhZWtYOcJrHRlO4utRWKxBkLYhB2dLQQ/DIQhvDdJIPDr6Qr2DoEzMAAOwEN7mBlg37XWhgOsPEGpDe9TXY8T3DXhPWDvwS1w1IIbYBPALbDUEixq4BYYfwLzAS5lRJCqHMiaCqRwV1cHMAEs7Ps9aQxA5wtAKhe3aEuwq2tqvcETGLUp2MaOpSWYtCk4xeBagrlUkAvgN6qPUSTIGkoKYJqC/xPNC1w0r+ML1j9OAAAAAElFTkSuQmCC"
+                                            />
+                                            <p class="text-danger"
+                                               th:text="${message==receipt.id.toString()} ? 'Updated successfully!' : ''"></p>
+                                        </div>
                                     </form>
+                                </div>
 
-                                </div><!---->
                             </div>
-                            <div class="justify-content-between">
-                                <a th:href="@{'/update/receipt?id=' + ${receipt.id}}" class="category-item">
-                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pen"
-                                         fill="text-danger" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd"
-                                              d="M5.707 13.707a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391L10.086 2.5a2 2 0 0 1 2.828 0l.586.586a2 2 0 0 1 0 2.828l-7.793 7.793zM3 11l7.793-7.793a1 1 0 0 1 1.414 0l.586.586a1 1 0 0 1 0 1.414L5 13l-3 1 1-3z"/>
-                                        <path fill-rule="evenodd"
-                                              d="M9.854 2.56a.5.5 0 0 0-.708 0L5.854 5.855a.5.5 0 0 1-.708-.708L8.44 1.854a1.5 1.5 0 0 1 2.122 0l.293.292a.5.5 0 0 1-.707.708l-.293-.293z"/>
-                                        <path d="M13.293 1.207a1 1 0 0 1 1.414 0l.03.03a1 1 0 0 1 .03 1.383L13.5 4 12 2.5l1.293-1.293z"/>
-                                    </svg>
-                                    Edit</a>
-                                <span> | </span>
+                            <div sec:authorize="isFullyAuthenticated()" class="form-row">
 
-                                <a th:href="@{'/remove/receipt?id=' + ${receipt.id}}" class="category-item">
+                                <div class="col-md-7 mb-3">
+                                    <form class="text-danger " method="POST" id="receipt-update"
+                                          th:action="'/edit'" name="receipt">
+                                        <input id="id-update" name="id" type="number" hidden th:value="${receipt.id}">
+                                        <input th:value="${receipt.id}" type="image"
+                                               src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAABlklEQVQ4jWNgoBAwkqJ4c1K6pfKPzxNY2Nj4v33+PNNg7dp+FmI1L+0tjXsuZDyP4/sPZpuf7xkeX7qUysDA0M9EjOY5M+u8/8hZzbZz82ZmM7dkOMIhxPDn169PDAwMDARdsG9ZsPZrRoFFEirabIxMTAxiktIMRzjZ//5g5ykkaMD++b4awoIiax1MhYWOXD/P8OL5P4YH92/8Zv9wMdN33szjDAx4AnH/fF8NYQmpDTqmVuqMTEwM////Z1i18/X7r98/JicnN62HqcPqAmyar545fluK4VWIXfLaS8hqMVyAS/P7t69C7KJQNWO4YM8Mfy0hCYl1KJpPH7v9/t1rrJpRDNgwxcdLUFJ0va6pFRuxmhkYGBiYGBgYGP4zMDBycXDNlpCRQdH8+t3rQHyaGRgYGJgZGBgYPqf4hJtqy4axM/xg+/LjG8O9a9d+P37xLMgjfsNZfJrhBqhpaq44cv2njL4897fH9++/evXpS0JA2sbdhDTDvfD5+z9xdsYfl1fuvpt87Jm2XFDG+o3EaKYKAAChD7cebKgXDgAAAABJRU5ErkJggg=="/>
+                                    </form>
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <form class="text-danger col-md-3" method="POST" id="receipt-delete"
+                                          th:action="'/remove'" name="receipt">
+                                        <input id="id" name="id" type="number" hidden th:value="${receipt.id}">
+                                        <input th:value="${receipt.id}" type="image"
+                                               src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAABhElEQVQ4jc1Sy07CUBCdW14tlIbLYyHFlSSEtiifAi0Jj0QjLP0B1yZ8BAtkDSY8/JNSIHyA4AIXJSZIQ6V14yUFYeNGz2pyz5kzMycX4F9hqCh1VZZbp3hVlltDRak739yk0PL5h1gyeeelaUZDCF12u1WnUCsUGmfpdMkyzY2ay3myg8E9AABFBBZC5x6fj/aHQnRcFIvOTVRZbsUF4YYNhxmX1+sFiooRDh2s2OQlqcxi7F/pujGfTDq2ZW15SSqz4TCz0nVjNh63s71e9agBmZaQpFIAY2al62sAAFJ/N9ec+h8GAABqPv/IZzIlFmM/AMBK1435aNS56vdvD7XUj24C2943p45LXUdPyGTIzWvTMD4DGDN0MJiqRCIXjen0+aSBKstNXhR3gc1Ho6f3xUKjOS7FYuxnOC5diUaTThP33mRHeLPxuJ3t92sAACpCiHAJUSyqtm2TMHcGlG2/mIZhfCyX6PUg7WyvV9MoahMXhOvtZmOCZb0dDeQ3X/nv8QXRYq0mSm2lvwAAAABJRU5ErkJggg=="/>
+                                    </form>
+                                </div>
+
+                                <!--<a th:href="@{'/remove/receipt?id=' + ${receipt.id}}" class="category-item">
+
                                     <img style="max-width: 16px;"
                                          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAABhElEQVQ4jc1Sy07CUBCdW14tlIbLYyHFlSSEtiifAi0Jj0QjLP0B1yZ8BAtkDSY8/JNSIHyA4AIXJSZIQ6V14yUFYeNGz2pyz5kzMycX4F9hqCh1VZZbp3hVlltDRak739yk0PL5h1gyeeelaUZDCF12u1WnUCsUGmfpdMkyzY2ay3myg8E9AABFBBZC5x6fj/aHQnRcFIvOTVRZbsUF4YYNhxmX1+sFiooRDh2s2OQlqcxi7F/pujGfTDq2ZW15SSqz4TCz0nVjNh63s71e9agBmZaQpFIAY2al62sAAFJ/N9ec+h8GAABqPv/IZzIlFmM/AMBK1435aNS56vdvD7XUj24C2943p45LXUdPyGTIzWvTMD4DGDN0MJiqRCIXjen0+aSBKstNXhR3gc1Ho6f3xUKjOS7FYuxnOC5diUaTThP33mRHeLPxuJ3t92sAACpCiHAJUSyqtm2TMHcGlG2/mIZhfCyX6PUg7WyvV9MoahMXhOvtZmOCZb0dDeQ3X/nv8QXRYq0mSm2lvwAAAABJRU5ErkJggg=="/>
-                                    Delete</a>
-
-
+                                    Delete
+                                </a>-->
                             </div>
+
+
                         </div>
                     </div>
                 </div>

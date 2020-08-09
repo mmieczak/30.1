@@ -69,7 +69,7 @@
             <!-- Masthead Avatar Image-->
             <!--<img style="width:120%; height:100%;margin-top: 5px" class="masthead-avatar mb-5" src="/img/bg3.jpg" alt=""/>-->
             <!-- Masthead Heading-->
-            <h2 class="masthead-heading text-uppercase mb-0 mt-5 " style="">Receipts</h2>
+            <h2 class="masthead-heading text-uppercase mb-0 mt-5 " style="">Receipts 4 Category</h2>
             <!-- Icon Divider-->
             <div class="divider-custom divider-light">
                 <div class="divider-custom-line"></div>
@@ -81,31 +81,18 @@
             <div class="col-md-12 md-auto ">
 
                 <!--AUTHOR-->
-                <form action="/receipts" method="get" th:object="${filters}">
+                <form th:action="@{/category(id=${filters.category.id})}" method="get" th:object="${filters}">
                     <!--RECEIPT NAME-->
                     <div class="form-row">
 
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             <input class="custom-select" type="text" placeholder="Receipt Name" th:field="*{name}">
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <select class="custom-select" id="basics" th:object="${allauthors}" name="author">
-                                <option value="">Select Author</option>
-                                <option th:each="item: ${allauthors}"
-                                        th:value="${{item.username}}" th:text="${item.firstname+' '+item.surname}"
-                                        th:selected="${(item.username)==filters.author}">
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             <!--CATEGORY-->
-                            <select class="custom-select" id="basic" th:object="${allcategories}" name="category">
-                                <option value="">Select Category</option>
-                                <option th:each="item: ${allcategories}"
-                                        th:value="${{item.id}}" th:text="${item.name}"
-                                        th:selected="${item.id==filters.category.id}">
-                                </option>
-                            </select>
+                            <input class="custom-select" type="text" th:value="*{category.name}" disabled="disabled">
+                            <input id="id-updas" name="id" type="number" hidden th:value="${filters.category.id}">
+
                         </div>
 
 

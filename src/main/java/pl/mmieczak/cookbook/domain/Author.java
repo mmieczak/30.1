@@ -22,7 +22,7 @@ public class Author {
     private String firstname;
     private String surname;
 
-    @OneToMany(mappedBy = "author", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "author", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Receipt> receipts = new ArrayList<>();
 
     //Helper Method, zachowanie spojnosci modelu danych i modelu obiektowego

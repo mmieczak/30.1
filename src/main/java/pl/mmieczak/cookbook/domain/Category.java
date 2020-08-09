@@ -26,7 +26,7 @@ public class Category {
     @Lob
     private byte[] categoryImage;
 
-    @ManyToMany(mappedBy = "categories", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "categories", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<Receipt> receipts = new ArrayList<>();
 
  /*   public void addReceipt(Receipt receipt) {

@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.mmieczak.cookbook.domain.*;
 import pl.mmieczak.cookbook.service.AuthorService;
 import pl.mmieczak.cookbook.service.CategoryService;
@@ -20,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -101,10 +101,6 @@ public class ReceiptController {
 
     @GetMapping("/receipts")
     String showReceipts(Model model, ReceiptFilters receiptFilters) {
-
-        /*AdminController adminController = new AdminController(receiptService, categoryService, authorService);
-        return adminController.adminReceipts(model, receiptFilters);*/
-
         List<Receipt> allUsersReceipts;
 
         if (receiptFilters.getCategory() == null) {
@@ -117,24 +113,33 @@ public class ReceiptController {
             allUsersReceipts = receiptService.findAllforFilters(receiptFilters);
         }
 
-
-        boolean contains = sessionAction.getVotedForReceipts().contains(model.getAttribute("voted-in-session"));
-
         model.addAttribute("allcategories", categoryService.findAllCategories());
         model.addAttribute("allauthors", authorService.findAllAuthors());
         model.addAttribute("receipts", allUsersReceipts);
         model.addAttribute("imgUtil", new ImageUtil());
         model.addAttribute("filters", receiptFilters);
-        model.addAttribute("voted-in-session", sessionAction);
-        model.addAttribute("display-like-option", contains);
         return "receipts";
     }
 
     @PostMapping("/vote")
-    String vote(Receipt receipt, Model model, @RequestParam Map<String, String> requestParams) throws IOException, ServletException {
-        receipt.setVotes(receipt.getVotes() + 1);
+    String vote(@RequestParam(value = "receipt", required = true) Receipt receipt, @RequestParam(value = "votes", required = false) Integer votes, RedirectAttributes redirectAttributes) {
+
+        String returnForm = "redirect:/receipts";
+        if (votes == null)
+            receipt.setVotes(receipt.getVotes() + 1);
+        else {
+            receipt.setVotes(votes);
+            returnForm = "redirect:/admin/receipts";
+        }
         receiptService.save(receipt);
-        return "redirect:/receipts";
+        redirectAttributes.addFlashAttribute("message", receipt.getId().toString());
+
+        return returnForm;
     }
 
+    @PostMapping("/remove")
+    String delete(@RequestParam Long id) {
+        receiptService.deleteById(id);
+        return "redirect:/receipts";
+    }
 }

@@ -5,5 +5,8 @@ import pl.mmieczak.cookbook.domain.Category;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-Category findAllByNameContaining(String name);
+    Category findAllByIdContaining(String name);
+
+    Category findAllByIdEquals(long categoryId);
 }
+

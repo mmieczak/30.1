@@ -21,7 +21,7 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category findAllByNameContaining(String categoryName) {
-        return categoryRepository.findAllByNameContaining(categoryName);
+    public Category findAllByCategoryIdEquals(long categoryId) {
+        return categoryRepository.findAllByIdEquals(categoryId);
     }
 }
