@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+            integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+            integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+            integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css"/>
+    <title>Create Receipt</title>
+    <link href="css/styles.css" rel="stylesheet"/>
+</head>
+<body>
+
+<div class="container col-md-8" style="max-width: 760px">
+    <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="https://dbdzm869oupei.cloudfront.net/img/sticker/preview/8797.png"
+             id="icon" alt="" width="100" height="120"/>
+        <h2>New Receipt</h2>
+        <form method="post" th:action="@{/create}" th:object="${receipt}" enctype="multipart/form-data">
+            <input th:field="*{id}" name="receipt.id" hidden>
+            <!--FIELDS-->
+            <div class="form-group row">
+                <label for="receipt-name" class="col-sm-3 col-form-label">Name:</label>
+                <div class="col-sm-9">
+                    <input type="text" id="receipt-name" class="form-control" placeholder="Receipt name" name="name">
+                </div>
+            </div>
+            <div class="form-group row" th:each="ingred, item: *{ingredients}">
+                <label for="ingredient1" class="col-sm-3 col-form-label"
+                       th:text="*{'Ingredient '+__${item.index+1}__+':'}">Ingredient 1:</label>
+                <div class="col-sm-5">
+                    <input th:field="*{ingredients[__${item.index}__].name}" id="ingredient1" type="text"
+                           class="form-control" th:placeholder="*{'Ingredient name'}" name="receipt.ingredient.name">
+                    <input th:field="*{ingredients[__${item.index}__].id}" name="receipt.ingredient.id" hidden>
+                </div>
+
+                <div class="col-sm-2">
+                    <input th:field="*{ingredients[__${item.index}__].quantity}" type="text"
+                           class="form-control" placeholder="Unit" name="receipt.ingredient.quantity">
+                </div>
+
+                <div class="col-sm-2">
+                    <select th:field="*{ingredients[__${item.index}__].unit}" class="form-control">
+                        <option th:each="unit: ${T(pl.mmieczak.cookbook.domain.IngredientUnit).values()}"
+                                th:text="${unit.toString().toLowerCase()}" th:value="${unit}"></option>
+                    </select>
+                </div>
+            </div>
+
+            </br>
+            <h3 for="basic" class="">Choose categorties</h3>
+            <select class="custom-select" id="basic" multiple="multiple" th:field="*{categories}"
+                    name="categories">
+                <option th:each="category: ${receipt.categories}"
+                        th:value="${{category}}" th:text="${category.name}">
+                </option>
+            </select>
+            </br>
+
+            </br>
+            <!--IMAGE-->
+            <h3 class="">Pick image: </h3>
+
+            <div class="input-group">
+                <div class="custom-file text-danger">
+                    <input type="file" class="text-danger" id="image-box" name="image_uploads"
+                           aria-describedby="inputGroupFileAddon01">
+                    <label class=" text-danger text-center" for="image-box"></label>
+                </div>
+            </div>
+            </br>
+            </br>
+            <!--AUTHOR - HIDDEN-->
+            <div class="form-group row">
+                <div class="col-sm-10" th:object="${receipt.author}">
+                    <input name="author.username" type="hidden" id="author_username" class="form-control"
+                           placeholder="Author"
+                           th:value="*{username}" readonly>
+                    <input th:field="*{id}" name="author.id" hidden>
+                </div>
+            </div>
+            <br>
+            <div>
+                <button>Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

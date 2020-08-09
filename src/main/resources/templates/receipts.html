@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Start Cooking</title>
+
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet"
+          type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="../../css/styles.css" rel="stylesheet"/>
+</head>
+<body id="page-top">
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="/">Start Cooking</a>
+        <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded"
+                type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"
+                                                     th:href="@{/receipts}">Receipts</a></li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"
+                                                     th:href="@{/create}">New Receipt</a></li>
+                <ul class="nav nav-tabs" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true" aria-expanded="false">ADMIN</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item disabled" th:href="@{/admin/categories}">Categories</a>
+                            <a class="dropdown-item" th:href="@{/admin/receipts}">Receipts</a>
+                            <a class="dropdown-item disabled" th:href="@{/admin/authors}">Authors</a>
+                        </div>
+                    </li>
+                </ul>
+                <li sec:authorize="!isFullyAuthenticated()" class="nav-item mx-0 mx-lg-1">
+                    <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" th:href="@{/login}">Login</a></li>
+                <li sec:authorize="isFullyAuthenticated()" class="nav-item mx-0 mx-lg-1">
+                    <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" th:href="@{/logout} ">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- Masthead-->
+<header class="masthead bg-primary text-white text-center" style="background-image: url('/img/bg3.jpg')">
+    <div class="container d-flex align-items-center flex-column">
+
+        <div class="col-md-12 md-auto" style="background-color:#000">
+            <!-- Masthead Heading-->
+            <h2 class="masthead-heading text-uppercase mb-0 mt-5 " style="">Receipts</h2>
+            <!-- Icon Divider-->
+            <div class="divider-custom divider-light">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-star text-warning"></i></div>
+                <div class="divider-custom-line"></div>
+            </div>
+            <br/>
+            <div class="col-md-12 md-auto ">
+                <!--AUTHOR-->
+                <form action="/receipts" method="get" th:object="${filters}">
+                    <!--RECEIPT NAME-->
+                    <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <input class="custom-select" type="text" placeholder="Receipt Name" th:field="*{name}">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <select class="custom-select" id="basics" th:object="${allauthors}" name="author">
+                                <option value="">Select Author</option>
+                                <option th:each="item: ${allauthors}"
+                                        th:value="${{item.username}}" th:text="${item.firstname+' '+item.surname}"
+                                        th:selected="${(item.username)==filters.author}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <!--CATEGORY-->
+                            <select class="custom-select" id="basic" th:object="${allcategories}" name="category">
+                                <option value="">Select Category</option>
+                                <option th:each="item: ${allcategories}"
+                                        th:value="${{item.id}}" th:text="${item.name}"
+                                        th:selected="${item.id==filters.category.id}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="submit" value="Filter" class="btn btn-primary"/>
+                </form>
+                <div class="mt-3 mb-0">
+                    <span>Hits: <p class="text-danger" th:text="*{receipts.size()}"></p></span>
+                </div>
+            </div>
+
+            <section class="page-section portfolio" id="portfolio">
+                <!--<div class="container">-->
+                <div class="container">
+                    <div class="card-columns">
+                        <div class="card mb-2" th:each="receipt : ${receipts}">
+                            <a th:href="@{/edit(id=${receipt.id})}">
+                                <div th:if="${receipt.receiptImage}">
+                                    <img class="card-img-top img-fluid"
+                                         th:src="'data:image/jpeg;base64,' + ${imgUtil.getImgData(receipt.receiptImage)}"/>
+                                </div>
+
+                                <div class="card-body">
+                                    <h4 class="card-title" th:text="${receipt.name}">Card title</h4>
+
+                                </div>
+                            </a>
+                            <div class="form-row-rec">
+                                <div sec:authorize="!isFullyAuthenticated()" style="align-content: center">
+                                    <label class="text-danger"
+                                           for="like-btn">Votes:<span
+                                            th:text="${receipt.votes}"></span>
+                                    </label>
+                                </div>
+                                <div sec:authorize="isFullyAuthenticated()" style="align-content: center">
+
+                                    <form method="POST" id="like-btn"
+                                          th:action="@{/vote(receipt=${receipt.id})}">
+                                        <div class="form-group">
+                                            <label class="text-danger  col-form-label" for="like-btn">
+                                                Votes:<span th:text="${receipt.votes}"></span>
+                                            </label>
+                                            <div>
+                                                <input id="like-btn2" type="image"
+                                                       src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAyUlEQVRIie2UMQoCMRBFXxTsvIHWVp7BUvYEFl5G8AReQTyAhZWtYOcJrHRlO4utRWKxBkLYhB2dLQQ/DIQhvDdJIPDr6Qr2DoEzMAAOwEN7mBlg37XWhgOsPEGpDe9TXY8T3DXhPWDvwS1w1IIbYBPALbDUEixq4BYYfwLzAS5lRJCqHMiaCqRwV1cHMAEs7Ps9aQxA5wtAKhe3aEuwq2tqvcETGLUp2MaOpSWYtCk4xeBagrlUkAvgN6qPUSTIGkoKYJqC/xPNC1w0r+ML1j9OAAAAAElFTkSuQmCC"
+                                                />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                            <div sec:authorize="isFullyAuthenticated()" class="form-row">
+
+                                <div class="col-md-7 mb-3">
+                                    <form class="text-danger " method="GET" id="receipt-update"
+                                          th:action="@{/edit(id=${receipt.id})}" name="receipt">
+                                        <input id="id-update" name="id" type="number" hidden th:value="${receipt.id}">
+                                        <input type="image"
+                                               src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAABlklEQVQ4jWNgoBAwkqJ4c1K6pfKPzxNY2Nj4v33+PNNg7dp+FmI1L+0tjXsuZDyP4/sPZpuf7xkeX7qUysDA0M9EjOY5M+u8/8hZzbZz82ZmM7dkOMIhxPDn169PDAwMDARdsG9ZsPZrRoFFEirabIxMTAxiktIMRzjZ//5g5ykkaMD++b4awoIiax1MhYWOXD/P8OL5P4YH92/8Zv9wMdN33szjDAx4AnH/fF8NYQmpDTqmVuqMTEwM////Z1i18/X7r98/JicnN62HqcPqAmyar545fluK4VWIXfLaS8hqMVyAS/P7t69C7KJQNWO4YM8Mfy0hCYl1KJpPH7v9/t1rrJpRDNgwxcdLUFJ0va6pFRuxmhkYGBiYGBgYGP4zMDBycXDNlpCRQdH8+t3rQHyaGRgYGJgZGBgYPqf4hJtqy4axM/xg+/LjG8O9a9d+P37xLMgjfsNZfJrhBqhpaq44cv2njL4897fH9++/evXpS0JA2sbdhDTDvfD5+z9xdsYfl1fuvpt87Jm2XFDG+o3EaKYKAAChD7cebKgXDgAAAABJRU5ErkJggg=="/>
+                                    </form>
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <form class="text-danger col-md-3" method="POST" id="receipt-delete"
+                                          th:action="'/remove'" name="receipt">
+                                        <input id="id" name="id" type="number" hidden th:value="${receipt.id}">
+                                        <input th:value="${receipt.id}" type="image"
+                                               src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAABhElEQVQ4jc1Sy07CUBCdW14tlIbLYyHFlSSEtiifAi0Jj0QjLP0B1yZ8BAtkDSY8/JNSIHyA4AIXJSZIQ6V14yUFYeNGz2pyz5kzMycX4F9hqCh1VZZbp3hVlltDRak739yk0PL5h1gyeeelaUZDCF12u1WnUCsUGmfpdMkyzY2ay3myg8E9AABFBBZC5x6fj/aHQnRcFIvOTVRZbsUF4YYNhxmX1+sFiooRDh2s2OQlqcxi7F/pujGfTDq2ZW15SSqz4TCz0nVjNh63s71e9agBmZaQpFIAY2al62sAAFJ/N9ec+h8GAABqPv/IZzIlFmM/AMBK1435aNS56vdvD7XUj24C2943p45LXUdPyGTIzWvTMD4DGDN0MJiqRCIXjen0+aSBKstNXhR3gc1Ho6f3xUKjOS7FYuxnOC5diUaTThP33mRHeLPxuJ3t92sAACpCiHAJUSyqtm2TMHcGlG2/mIZhfCyX6PUg7WyvV9MoahMXhOvtZmOCZb0dDeQ3X/nv8QXRYq0mSm2lvwAAAABJRU5ErkJggg=="/>
+                                    </form>
+                                </div>
+
+                                <!--<a th:href="@{'/remove/receipt?id=' + ${receipt.id}}" class="category-item">
+
+                                    <img style="max-width: 16px;"
+                                         src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAABhElEQVQ4jc1Sy07CUBCdW14tlIbLYyHFlSSEtiifAi0Jj0QjLP0B1yZ8BAtkDSY8/JNSIHyA4AIXJSZIQ6V14yUFYeNGz2pyz5kzMycX4F9hqCh1VZZbp3hVlltDRak739yk0PL5h1gyeeelaUZDCF12u1WnUCsUGmfpdMkyzY2ay3myg8E9AABFBBZC5x6fj/aHQnRcFIvOTVRZbsUF4YYNhxmX1+sFiooRDh2s2OQlqcxi7F/pujGfTDq2ZW15SSqz4TCz0nVjNh63s71e9agBmZaQpFIAY2al62sAAFJ/N9ec+h8GAABqPv/IZzIlFmM/AMBK1435aNS56vdvD7XUj24C2943p45LXUdPyGTIzWvTMD4DGDN0MJiqRCIXjen0+aSBKstNXhR3gc1Ho6f3xUKjOS7FYuxnOC5diUaTThP33mRHeLPxuJ3t92sAACpCiHAJUSyqtm2TMHcGlG2/mIZhfCyX6PUg7WyvV9MoahMXhOvtZmOCZb0dDeQ3X/nv8QXRYq0mSm2lvwAAAABJRU5ErkJggg=="/>
+                                    Delete
+                                </a>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</header>
+<!-- Copyright Section-->
+<div class="copyright py-4 text-center text-white">
+    <div class="container"><small>Copyright © CookBook Demo Project 2020</small></div>
+</div>
+<!-- Scroll to Top Button (Only visible on small and extra-small screen sizes)-->
+<div class="scroll-to-top d-lg-none position-fixed">
+    <a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top"><i
+            class="fa fa-chevron-up"></i></a>
+</div>
+Bootstrap core JS
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+<!-- Third party plugin JS-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
+<!-- Core theme JS-->
+<script src="js/scripts_stopped.js"></script>
+
+</body>
+</html>
