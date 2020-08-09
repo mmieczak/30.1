@@ -29,19 +29,6 @@ public class Category {
     @ManyToMany(mappedBy = "categories", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<Receipt> receipts = new ArrayList<>();
 
- /*   public void addReceipt(Receipt receipt) {
-        receipts.add(receipt);
-        receipt.setCategories(this);
-    }*/
-
-/*    //Helper Method, zachowanie spojnosci modelu danych i modelu obiektowego
-    public void addReceipt(Receipt receipt) {
-        receipts.add(receipt);
-        List<Category> categories = new ArrayList<>();
-        categories.add(this);
-        receipt.setCategories(categories);
-    }*/
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,9 +41,5 @@ public class Category {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
-    }
-
-    public static Category create() {
-        return new Category();
     }
 }

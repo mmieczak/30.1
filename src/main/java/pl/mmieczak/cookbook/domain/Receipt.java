@@ -31,19 +31,13 @@ public class Receipt {
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Category> categories;
 
-    @OneToMany(mappedBy = "receipt", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "receipt", cascade = {CascadeType.ALL})
     private List<Ingredient> ingredients = new ArrayList<>();
 
     public void addIngredient(Ingredient ingredient) {
         this.ingredients.add(ingredient);
         ingredient.setReceipt(this);
     }
-
-    public void addCategory(Category category) {
-        this.categories.add(category);
-        category.setReceipts((List<Receipt>) this);
-    }
-
 
     public Receipt(Long id, String name, Integer votes, byte[] receiptImage, Author author, List<Category> categories, List<Ingredient> ingredients) {
         this.id = id;
@@ -54,5 +48,4 @@ public class Receipt {
         this.categories = categories;
         this.ingredients = ingredients;
     }
-
 }

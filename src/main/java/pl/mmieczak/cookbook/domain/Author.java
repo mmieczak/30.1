@@ -12,7 +12,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-//@ToString
 public class Author {
 
     @Id
@@ -25,7 +24,6 @@ public class Author {
     @OneToMany(mappedBy = "author", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Receipt> receipts = new ArrayList<>();
 
-    //Helper Method, zachowanie spojnosci modelu danych i modelu obiektowego
     public void addReceipt(Receipt receipt) {
         receipts.add(receipt);
         receipt.setAuthor(this);

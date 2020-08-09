@@ -7,7 +7,6 @@ public class ReceiptFilters {
     private String author = "";
     private Category category = new Category();
 
-
     public String getName() {
         return name;
     }

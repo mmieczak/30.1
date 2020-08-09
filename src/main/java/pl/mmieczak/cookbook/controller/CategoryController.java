@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.mmieczak.cookbook.domain.Category;
 import pl.mmieczak.cookbook.domain.Receipt;
 import pl.mmieczak.cookbook.domain.ReceiptFilters;
-import pl.mmieczak.cookbook.service.AuthorService;
 import pl.mmieczak.cookbook.service.CategoryService;
 import pl.mmieczak.cookbook.service.ReceiptService;
 import pl.mmieczak.cookbook.util.ImageUtil;
@@ -20,20 +19,18 @@ public class CategoryController {
 
     private final ReceiptService receiptService;
     private final CategoryService categoryService;
-    private final AuthorService authorService;
 
     @Autowired
-    public CategoryController(ReceiptService receiptService, CategoryService categoryService, AuthorService authorService) {
+    public CategoryController(ReceiptService receiptService, CategoryService categoryService) {
         this.receiptService = receiptService;
         this.categoryService = categoryService;
-        this.authorService = authorService;
     }
 
     @GetMapping("/category")
     String showReceiptsForCategory(Model model, ReceiptFilters receiptFilters, @RequestParam Long id) {
         List<Receipt> allUsersReceipts;
 
-        Category selectedCategory = categoryService.findAllByCategoryIdEquals(id);
+        Category selectedCategory = categoryService.findAllByCategoryId(id);
         receiptFilters.setCategory(selectedCategory);
         if ("".equals(receiptFilters.getName()))
             allUsersReceipts = receiptService.findAllForCategory(selectedCategory);

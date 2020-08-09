@@ -7,14 +7,14 @@ INSERT INTO user_role(username, role) VALUES ( 'user', 'ROLE_USER');
 INSERT INTO author(username, firstname, surname) VALUES ('user','Jan', 'Kowalski');
 INSERT INTO author(username, firstname, surname) VALUES ('admin','Mac', 'Miecz');
 
-INSERT INTO category(name, category_image) VALUES ('Breakfast',FILE_READ('src/main/resources/static/img/sr1.jpg'));
-INSERT INTO category(name, category_image) VALUES ('Soups',FILE_READ('src/main/resources/static/img/sr2.jpg'));
-INSERT INTO category(name, category_image) VALUES ('Meat',FILE_READ('src/main/resources/static/img/sr3.jpg'));
-INSERT INTO category(name, category_image) VALUES ('Vegetarian',FILE_READ('src/main/resources/static/img/sr4.jpg'));
-INSERT INTO category(name, category_image) VALUES ('Low Fat',FILE_READ('src/main/resources/static/img/sr5.jpg'));
-INSERT INTO category(name, category_image) VALUES ('Gluten Free',FILE_READ('src/main/resources/static/img/sr6.jpg'));
-INSERT INTO category(name, category_image) VALUES ('Deserts',FILE_READ('src/main/resources/static/img/sr7.jpg'));
-INSERT INTO category(name, category_image) VALUES ('Junk',FILE_READ('src/main/resources/static/img/sr8.jpg'));
+INSERT INTO category(name, category_image) VALUES ('Breakfast',FILE_READ('src/main/resources/static/img/rec1.jpg'));
+INSERT INTO category(name, category_image) VALUES ('Soups',FILE_READ('src/main/resources/static/img/rec2.jpg'));
+INSERT INTO category(name, category_image) VALUES ('Meat',FILE_READ('src/main/resources/static/img/rec3.jpg'));
+INSERT INTO category(name, category_image) VALUES ('Vegetarian',FILE_READ('src/main/resources/static/img/rec4.jpg'));
+INSERT INTO category(name, category_image) VALUES ('Low Fat',FILE_READ('src/main/resources/static/img/rec5.jpg'));
+INSERT INTO category(name, category_image) VALUES ('Gluten Free',FILE_READ('src/main/resources/static/img/rec6.jpg'));
+INSERT INTO category(name, category_image) VALUES ('Deserts',FILE_READ('src/main/resources/static/img/rec7.jpg'));
+INSERT INTO category(name, category_image) VALUES ('Junk',FILE_READ('src/main/resources/static/img/rec8.jpg'));
 
 
 INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Poached Eggs', 80, 1, FILE_READ('src/main/resources/static/img/rec6.jpg'));
@@ -25,21 +25,35 @@ INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Scrambled Eg
 INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Pizza Salame', 177, 2, FILE_READ('src/main/resources/static/img/rec2.jpg'));
 INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Fish Soup', 98, 1, FILE_READ('src/main/resources/static/img/rec5.jpg'));
 INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Sandwitches 2', 10, 2, FILE_READ('src/main/resources/static/img/rec6.jpg'));
+INSERT INTO receipt(name, votes, author_id, receipt_image) VALUES ('Hamburger', 95, 2, FILE_READ('src/main/resources/static/img/rec9.jpg'));
 
-/*INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 1', 120, 'g',1);
-INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 2', 100, 'g',1);
-INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 3', 550, 'g',1);
-INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 4', 50, 'g',2);
-INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 5', 350, 'ml',2);
-INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 6', 220, 'g',3);
-INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 7', 20, 'g',3);
-INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 8', 15, 'g',3);
-INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 9', 1500, 'ml',3);
-INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 10', 700, 'g',4);
-INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 11', 2000, 'ml',4);
-INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 12', 400, 'ml',4);
-INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 13', 150, 'g',4);
-INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 14', 500, 'ml',4);*/
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 1', 120, 'G',1);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 2', 100, 'G',1);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 3', 550, 'G',1);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 1', 50, 'G',2);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 2', 350, 'ML',2);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 3', 220, 'G',2);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 1', 20, 'G',3);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 2', 15, 'G',3);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 3', 15, 'G',3);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 1', 1500, 'ML',4);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 2', 700, 'G',4);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 3', 2000, 'ML',4);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 1', 400, 'ML',5);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 2', 150, 'G',5);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 3', 500, 'ML',5);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 1', 400, 'ML',6);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 2', 150, 'G',6);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 3', 500, 'ML',6);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 1', 400, 'ML',7);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 2', 150, 'G',7);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 3', 500, 'ML',7);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 1', 400, 'ML',8);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 2', 150, 'G',8);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 3', 500, 'ML',8);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 1', 400, 'ML',9);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 2', 150, 'G',9);
+INSERT INTO ingredient(name, quantity, unit, receipt_id) VALUES ('Ingredient 3', 500, 'ML',9);
 
 
 

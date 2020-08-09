@@ -5,7 +5,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,7 +35,6 @@ public class ReceiptController {
         this.receiptService = receiptService;
         this.categoryService = categoryService;
         this.authorService = authorService;
-
     }
 
     @GetMapping("/create")
@@ -45,9 +43,93 @@ public class ReceiptController {
         initializeAuthor(receipt);
         initializeIngriedients(receipt, INGREDIENTS_AMOUNT);
         model.addAttribute("receipt", receipt);
+        model.addAttribute("imgUtil", new ImageUtil());
         return "create";
     }
 
+    @PostMapping("/create")
+    String addReceipt(Receipt receipt, HttpServletRequest request) throws IOException, ServletException {
+        receipt.getIngredients().forEach(ingredient -> ingredient.setReceipt(receipt));
+        receipt.getAuthor().addReceipt(receipt);
+
+        receipt.setVotes(0);
+
+        //Handle Image
+        final Part filePart = request.getPart("image_uploads");
+        byte[] receiptImage = filePart.getInputStream().readAllBytes();
+        receipt.setReceiptImage(receiptImage);
+
+        receiptService.save(receipt);
+        return "redirect:/";
+    }
+
+    @GetMapping("/edit")
+    public String updateServiceOrder(@RequestParam(name = "id") Long id, Model model) {
+        Optional<Receipt> receiptToModify = receiptService.findAllForId(id);
+        List<Category> allCategories = categoryService.findAllCategories();
+        if (receiptToModify.isPresent()) {
+            model.addAttribute("receipt", receiptToModify.get());
+            model.addAttribute("categories", allCategories);
+            model.addAttribute("imgUtil", new ImageUtil());
+        } else {
+            return "err";
+        }
+        return "edit";
+    }
+
+    @PostMapping("/edit")
+    String editReceipt(Receipt receipt, HttpServletRequest request) throws IOException, ServletException {
+        final Part filePart = request.getPart("image_uploads");
+        byte[] receiptImage = filePart.getInputStream().readAllBytes();
+        if (receiptImage.length != 0)
+            receipt.setReceiptImage(receiptImage);
+        receiptService.modifyReceipt(receipt);
+        return "redirect:/receipts";
+    }
+
+    @GetMapping("/receipts")
+    String showReceipts(Model model, ReceiptFilters receiptFilters) {
+        List<Receipt> allUsersReceipts;
+
+        if (receiptFilters.getCategory() == null) {
+            receiptFilters.setCategory(new Category());
+        }
+
+        if (receiptFilters.getCategory().equals(new Category()))
+            allUsersReceipts = receiptService.findAllForEmptyCategory(receiptFilters);
+        else {
+            allUsersReceipts = receiptService.findAllForFilters(receiptFilters);
+        }
+
+        model.addAttribute("allcategories", categoryService.findAllCategories());
+        model.addAttribute("allauthors", authorService.findAllAuthors());
+        model.addAttribute("receipts", allUsersReceipts);
+        model.addAttribute("imgUtil", new ImageUtil());
+        model.addAttribute("filters", receiptFilters);
+        return "receipts";
+    }
+
+    @PostMapping("/vote")
+    String vote(@RequestParam(value = "receipt", required = true) Receipt receipt, @RequestParam(value = "votes", required = false) Integer votes, RedirectAttributes redirectAttributes) {
+
+        String returnForm = "redirect:/receipts";
+        if (votes == null)
+            receipt.setVotes(receipt.getVotes() + 1);
+        else {
+            receipt.setVotes(votes);
+            returnForm = "redirect:/admin/receipts";
+        }
+        receiptService.save(receipt);
+        redirectAttributes.addFlashAttribute("message", receipt.getId().toString());
+
+        return returnForm;
+    }
+
+    @PostMapping("/remove")
+    String delete(@RequestParam Long id) {
+        receiptService.deleteById(id);
+        return "redirect:/receipts";
+    }
 
     private void initializeCategories(Receipt receipt) {
         List<Category> allCategories = categoryService.findAllCategories();
@@ -79,67 +161,5 @@ public class ReceiptController {
             author.setFirstname(userName);
         }
         receipt.setAuthor(author);
-    }
-
-    @PostMapping("/create")
-    String addReceipt(Receipt receipt, BindingResult bindingResult, HttpServletRequest request, Model model) throws IOException, ServletException {
-
-        receipt.getIngredients().forEach(ingredient -> ingredient.setReceipt(receipt));
-        receipt.getAuthor().addReceipt(receipt);
-
-        receipt.setVotes(0);
-        //Receipt IMAGE ADD
-        final Part filePart = request.getPart("image_uploads");
-
-        byte[] receiptImage = filePart.getInputStream().readAllBytes();
-        receipt.setReceiptImage(receiptImage);
-        receiptService.save(receipt);
-
-        return "redirect:/";
-    }
-
-
-    @GetMapping("/receipts")
-    String showReceipts(Model model, ReceiptFilters receiptFilters) {
-        List<Receipt> allUsersReceipts;
-
-        if (receiptFilters.getCategory() == null) {
-            receiptFilters.setCategory(new Category());
-        }
-
-        if (receiptFilters.getCategory().equals(new Category()))
-            allUsersReceipts = receiptService.findAllForEmptyCategory(receiptFilters);
-        else {
-            allUsersReceipts = receiptService.findAllforFilters(receiptFilters);
-        }
-
-        model.addAttribute("allcategories", categoryService.findAllCategories());
-        model.addAttribute("allauthors", authorService.findAllAuthors());
-        model.addAttribute("receipts", allUsersReceipts);
-        model.addAttribute("imgUtil", new ImageUtil());
-        model.addAttribute("filters", receiptFilters);
-        return "receipts";
-    }
-
-    @PostMapping("/vote")
-    String vote(@RequestParam(value = "receipt", required = true) Receipt receipt, @RequestParam(value = "votes", required = false) Integer votes, RedirectAttributes redirectAttributes) {
-
-        String returnForm = "redirect:/receipts";
-        if (votes == null)
-            receipt.setVotes(receipt.getVotes() + 1);
-        else {
-            receipt.setVotes(votes);
-            returnForm = "redirect:/admin/receipts";
-        }
-        receiptService.save(receipt);
-        redirectAttributes.addFlashAttribute("message", receipt.getId().toString());
-
-        return returnForm;
-    }
-
-    @PostMapping("/remove")
-    String delete(@RequestParam Long id) {
-        receiptService.deleteById(id);
-        return "redirect:/receipts";
     }
 }

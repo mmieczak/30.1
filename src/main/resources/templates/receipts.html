@@ -15,9 +15,6 @@
           type="text/css"/>
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="../../css/styles.css" rel="stylesheet"/>
-    <!--
-            <script src="../static/js/scripts_atopped.js" crossorigin="anonymous"></script>
-    -->
 </head>
 <body id="page-top">
 <!-- Navigation-->
@@ -36,22 +33,17 @@
                                                      th:href="@{/receipts}">Receipts</a></li>
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"
                                                      th:href="@{/create}">New Receipt</a></li>
-                <!--<li th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="nav-item mx-0 mx-lg-1">-->
-
                 <ul class="nav nav-tabs" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                            aria-haspopup="true" aria-expanded="false">ADMIN</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" th:href="@{/admin/categories}">Categories</a>
+                            <a class="dropdown-item disabled" th:href="@{/admin/categories}">Categories</a>
                             <a class="dropdown-item" th:href="@{/admin/receipts}">Receipts</a>
-                            <a class="dropdown-item" th:href="@{/admin/authors}">Authors</a>
+                            <a class="dropdown-item disabled" th:href="@{/admin/authors}">Authors</a>
                         </div>
                     </li>
                 </ul>
-
-                <!--<a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" th:href="@{/admin}">Admin</a>-->
-                <!--  </li>-->
                 <li sec:authorize="!isFullyAuthenticated()" class="nav-item mx-0 mx-lg-1">
                     <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" th:href="@{/login}">Login</a></li>
                 <li sec:authorize="isFullyAuthenticated()" class="nav-item mx-0 mx-lg-1">
@@ -66,8 +58,6 @@
     <div class="container d-flex align-items-center flex-column">
 
         <div class="col-md-12 md-auto" style="background-color:#000">
-            <!-- Masthead Avatar Image-->
-            <!--<img style="width:120%; height:100%;margin-top: 5px" class="masthead-avatar mb-5" src="/img/bg3.jpg" alt=""/>-->
             <!-- Masthead Heading-->
             <h2 class="masthead-heading text-uppercase mb-0 mt-5 " style="">Receipts</h2>
             <!-- Icon Divider-->
@@ -77,14 +67,11 @@
                 <div class="divider-custom-line"></div>
             </div>
             <br/>
-
             <div class="col-md-12 md-auto ">
-
                 <!--AUTHOR-->
                 <form action="/receipts" method="get" th:object="${filters}">
                     <!--RECEIPT NAME-->
                     <div class="form-row">
-
                         <div class="col-md-4 mb-3">
                             <input class="custom-select" type="text" placeholder="Receipt Name" th:field="*{name}">
                         </div>
@@ -107,8 +94,6 @@
                                 </option>
                             </select>
                         </div>
-
-
                     </div>
                     <input type="submit" value="Filter" class="btn btn-primary"/>
                 </form>
@@ -122,7 +107,7 @@
                 <div class="container">
                     <div class="card-columns">
                         <div class="card mb-2" th:each="receipt : ${receipts}">
-                            <a th:href="@{/receipts/{id}(id=${receipt.id})}">
+                            <a th:href="@{/edit(id=${receipt.id})}">
                                 <div th:if="${receipt.receiptImage}">
                                     <img class="card-img-top img-fluid"
                                          th:src="'data:image/jpeg;base64,' + ${imgUtil.getImgData(receipt.receiptImage)}"/>
@@ -133,8 +118,6 @@
 
                                 </div>
                             </a>
-
-
                             <div class="form-row-rec">
                                 <div sec:authorize="!isFullyAuthenticated()" style="align-content: center">
                                     <label class="text-danger"
@@ -163,10 +146,10 @@
                             <div sec:authorize="isFullyAuthenticated()" class="form-row">
 
                                 <div class="col-md-7 mb-3">
-                                    <form class="text-danger " method="POST" id="receipt-update"
-                                          th:action="'/edit'" name="receipt">
+                                    <form class="text-danger " method="GET" id="receipt-update"
+                                          th:action="@{/edit(id=${receipt.id})}" name="receipt">
                                         <input id="id-update" name="id" type="number" hidden th:value="${receipt.id}">
-                                        <input th:value="${receipt.id}" type="image"
+                                        <input type="image"
                                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAABlklEQVQ4jWNgoBAwkqJ4c1K6pfKPzxNY2Nj4v33+PNNg7dp+FmI1L+0tjXsuZDyP4/sPZpuf7xkeX7qUysDA0M9EjOY5M+u8/8hZzbZz82ZmM7dkOMIhxPDn169PDAwMDARdsG9ZsPZrRoFFEirabIxMTAxiktIMRzjZ//5g5ykkaMD++b4awoIiax1MhYWOXD/P8OL5P4YH92/8Zv9wMdN33szjDAx4AnH/fF8NYQmpDTqmVuqMTEwM////Z1i18/X7r98/JicnN62HqcPqAmyar545fluK4VWIXfLaS8hqMVyAS/P7t69C7KJQNWO4YM8Mfy0hCYl1KJpPH7v9/t1rrJpRDNgwxcdLUFJ0va6pFRuxmhkYGBiYGBgYGP4zMDBycXDNlpCRQdH8+t3rQHyaGRgYGJgZGBgYPqf4hJtqy4axM/xg+/LjG8O9a9d+P37xLMgjfsNZfJrhBqhpaq44cv2njL4897fH9++/evXpS0JA2sbdhDTDvfD5+z9xdsYfl1fuvpt87Jm2XFDG+o3EaKYKAAChD7cebKgXDgAAAABJRU5ErkJggg=="/>
                                     </form>
                                 </div>
@@ -195,8 +178,6 @@
         </div>
     </div>
 </header>
-
-
 <!-- Copyright Section-->
 <div class="copyright py-4 text-center text-white">
     <div class="container"><small>Copyright © CookBook Demo Project 2020</small></div>

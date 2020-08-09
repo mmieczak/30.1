@@ -2184,6 +2184,11 @@ select.form-control:focus::-ms-value {
     border-radius: 0.25rem;
 }
 
+.file {
+    visibility: hidden;
+    position: absolute;
+}
+
 .form-control-lg {
     height: calc(1.5em + 1.25rem);
     padding: 0.5rem 1rem;

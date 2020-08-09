@@ -29,10 +29,6 @@ public class AdminController {
 
     @GetMapping("/admin/receipts")
     String adminReceipts(Model model, ReceiptFilters receiptFilters) {
-
-        /*ReceiptController receiptController = new ReceiptController(receiptService, categoryService, authorService);
-        receiptController.showReceipts(model, receiptFilters);*/
-
         List<Receipt> allUsersReceipts;
 
         if (receiptFilters.getCategory() == null) {
@@ -42,7 +38,7 @@ public class AdminController {
         if (receiptFilters.getCategory().equals(new Category()))
             allUsersReceipts = receiptService.findAllForEmptyCategory(receiptFilters);
         else {
-            allUsersReceipts = receiptService.findAllforFilters(receiptFilters);
+            allUsersReceipts = receiptService.findAllForFilters(receiptFilters);
         }
 
         String messageAdminAfterUpdateLikes = String.valueOf(model.asMap().get("message"));

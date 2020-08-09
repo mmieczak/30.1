@@ -14,6 +14,7 @@ import pl.mmieczak.cookbook.repository.IngredientRepository;
 import pl.mmieczak.cookbook.repository.ReceiptRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.data.domain.Sort.by;
 
@@ -34,45 +35,31 @@ public class ReceiptService {
     @Transactional
     public void save(Receipt receipt) {
         receiptRepository.save(receipt);
-
     }
-
 
     public List<Receipt> find3TopRated() {
         return receiptRepository.findTop3ByOrderByVotesDesc();
     }
 
-
     public List<Receipt> findAllSorted(String property) {
-
         Sort sortProperty = by(Sort.Order.by(property).ignoreCase().with(Direction.ASC));
         return receiptRepository.findAll(sortProperty);
     }
 
-    public List<Receipt> findAllforFilters(ReceiptFilters receiptFilters) {
-
-        //   return receiptRepository.findByNameContainsIgnoreCaseAndAuthor_UsernameContainsIgnoreCaseAndCategoriesContains(receiptFilters.getName(), receiptFilters.getAuthor(), receiptFilters.getCategory());
+    public List<Receipt> findAllForFilters(ReceiptFilters receiptFilters) {
         return receiptRepository.findByNameContainsIgnoreCaseAndAuthor_UsernameContainsIgnoreCaseAndCategoriesContains(receiptFilters.getName(), receiptFilters.getAuthor(), receiptFilters.getCategory());
-
-        //findByNameContainsIgnoreCaseAndAuthor_UsernameContainsIgnoreCaseAndCategories_EmptyContains
     }
 
-/*    public List<Receipt> findAllforEmptyFilters(ReceiptFilters receiptFilters) {
-
-        return receiptRepository.findByNameContainingIgnoreCaseAndAuthor_UsernameContainsIgnoreCase(receiptFilters.getName(), receiptFilters.getAuthor());
-    }*/
+    public Optional<Receipt> findAllForId(Long receiptId) {
+        return receiptRepository.findById(receiptId);
+    }
 
     public void saveNewIngredient(Ingredient ingredient) {
         ingredientRepository.save(ingredient);
     }
 
-/*    public void saveNewCategory(Category category) {
-        categoryRepository.save(category);
-    }*/
-
     public List<Receipt> findAllForEmptyCategory(ReceiptFilters receiptFilters) {
         return receiptRepository.findByNameContainingIgnoreCaseAndAuthor_UsernameContainsIgnoreCase(receiptFilters.getName(), receiptFilters.getAuthor());
-
     }
 
     public void deleteById(Long id) {
@@ -85,5 +72,21 @@ public class ReceiptService {
 
     public List<Receipt> findAllForCategoryAndReceiptName(Category selectedCategory, String name) {
         return receiptRepository.findAllByCategoriesContainsAndNameContainingIgnoreCase(selectedCategory, name);
+    }
+
+    public void modifyReceipt(Receipt receiptWithNewValues) {
+        Optional<Receipt> currentReceipt = receiptRepository.findAllById(receiptWithNewValues.getId());
+        Receipt modifiedReceipt;
+
+        if (currentReceipt.isPresent()) {
+            modifiedReceipt = currentReceipt.get();
+            modifiedReceipt.setName(receiptWithNewValues.getName());
+            modifiedReceipt.setAuthor(receiptWithNewValues.getAuthor());
+            modifiedReceipt.setReceiptImage(receiptWithNewValues.getReceiptImage());
+            modifiedReceipt.setCategories(receiptWithNewValues.getCategories());
+            modifiedReceipt.setVotes(receiptWithNewValues.getVotes());
+            modifiedReceipt.setIngredients(receiptWithNewValues.getIngredients());
+            receiptRepository.save(modifiedReceipt);
+        }
     }
 }

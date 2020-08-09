@@ -19,7 +19,7 @@ public class ImageUtil {
     }
 
     public static byte[] getImageAsBytes(String filepath) throws IOException {
-        File file = new File("src/main/resources/static/bg3.jpg");
+        File file = new File("src/main/resources/static/bg3_old.jpg");
         BufferedImage originalImage = ImageIO.read(file);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(originalImage, "jpg", baos);

@@ -21,5 +21,4 @@ public class UserRole {
 
     private String username;
     private String role;
-
 }

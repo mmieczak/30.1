@@ -5,9 +5,5 @@ import pl.mmieczak.cookbook.domain.Author;
 
 public interface AuthorRepository extends JpaRepository<Author, Long> {
 
-    Author findByFirstnameContainsIgnoreCase(String firstname);
-
     Author findByUsernameContainsIgnoreCase(String name);
-
-
 }
